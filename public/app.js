@@ -201,7 +201,7 @@ function mountRailMobile() {
 
   // al elegir una sesión se cierra solo
   document.querySelector(".rail")?.addEventListener("click", (e) => {
-    if (e.target.closest("[data-session]")) document.body.classList.remove("rail-open");
+    if (e.target.closest("[data-session], #new-chat")) document.body.classList.remove("rail-open");
   });
 }
 
@@ -710,11 +710,19 @@ function canvasAtBottom() {
 
 /** Deja el comienzo del turno visible, no el final. */
 function scrollTurnIntoView(card) {
+  if (!card) return;
   const c = el("canvas");
-  if (!c || !card) return;
-  const top = Math.max(0, (card.offsetTop || 0) - 16);
-  if (typeof c.scrollTo === "function") c.scrollTo({ top, behavior: "smooth" });
-  else c.scrollTop = top;
+
+  // En móvil scrollea el documento, no el canvas: cada uno tiene su camino.
+  const scroller = c && c.scrollHeight > c.clientHeight + 8;
+  if (scroller) {
+    const top = Math.max(0, (card.offsetTop || 0) - 16);
+    if (typeof c.scrollTo === "function") c.scrollTo({ top, behavior: "smooth" });
+    else c.scrollTop = top;
+    return;
+  }
+
+  card.scrollIntoView?.({ block: "start", behavior: "smooth" });
 }
 
 function scrollCanvasToEnd() {
@@ -1351,6 +1359,8 @@ function selectFirstAvailable() {
 
 function newChat() {
   state.tab = "active";
+  // En móvil el cajón tapa la animación: se cierra primero.
+  document.body.classList.remove("rail-open");
   stopEverything();
   voice?.stop();
 

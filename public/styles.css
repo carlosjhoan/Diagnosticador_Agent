@@ -4086,6 +4086,17 @@ body.instant .composer textarea { transition: none; }
   /* sin riel fijo: el compositor arranca en el borde */
   :root { --rail-w: 0px; }
 
+  /* pull to refresh: el documento tiene que poder scrollear.
+     Con body { overflow: hidden } iOS nunca dispara la recarga. */
+  html, body {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  .deck { display: block; min-height: calc(100dvh - 64px); }
+  .canvas { overflow: visible; padding-bottom: 96px; }
+  .dock { position: sticky; bottom: 0; background: var(--paper); }
+
   .rail-mobile { display: grid; }
 
   /* el riel pasa a cajón que se desliza */
