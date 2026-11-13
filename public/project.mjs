@@ -147,7 +147,10 @@ export function renderProject(host, project, { onBack, onNode, onProposal, inlin
         clearTimeout(timer);
         timer = setTimeout(() => abrirMetrica(box, project, tipo), 180);
       });
-      box.addEventListener("mouseleave", () => clearTimeout(timer));
+      box.addEventListener("mouseleave", () => {
+        clearTimeout(timer);
+        cerrarTimer = setTimeout(cerrarMetrica, 220);
+      });
       box.addEventListener("focus", () => abrirMetrica(box, project, tipo));
       box.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -196,8 +199,10 @@ export function renderProject(host, project, { onBack, onNode, onProposal, inlin
 /** Popover con los pasos que componen un porcentaje. */
 let metricPop = null;
 let metricAnchor = null;
+let cerrarTimer = null;
 
 function cerrarMetrica() {
+  clearTimeout(cerrarTimer);
   if (!metricPop) return;
   metricPop.remove();
   metricPop = null;
@@ -295,6 +300,11 @@ export function abrirMetrica(anchor, project, tipo) {
 
   el.style.left = Math.round(left) + "px";
   el.style.top = Math.round(top) + "px";
+
+  el.addEventListener("mouseenter", () => clearTimeout(cerrarTimer));
+  el.addEventListener("mouseleave", () => {
+    cerrarTimer = setTimeout(cerrarMetrica, 180);
+  });
 
   setTimeout(() => {
     document.addEventListener("click", fueraMetrica, true);

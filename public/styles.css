@@ -4005,7 +4005,7 @@ body.instant .pbar-track i { transition: none; }
   margin-left: auto;
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
   /* mismo vidrio que las tarjetas: luz arriba-izquierda, tinte acero abajo */
   background:
     radial-gradient(120% 130% at 6% -20%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0) 62%),
@@ -4019,26 +4019,6 @@ body.instant .pbar-track i { transition: none; }
     inset 0 1px 0 rgba(255, 255, 255, 0.98),
     inset 0 -1px 0 rgba(255, 255, 255, 0.5);
   transition: box-shadow 0.18s ease, transform 0.18s ease;
-}
-
-/* canto de luz enmascarado: da espesor al vidrio */
-.pmetrics::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.98),
-    rgba(139, 158, 190, 0.42) 40%,
-    rgba(255, 255, 255, 0.08) 64%,
-    rgba(255, 255, 255, 0.85)
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
 }
 
 /* reflejo que cruza al pasar el mouse */
