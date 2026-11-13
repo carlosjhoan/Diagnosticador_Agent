@@ -21,6 +21,18 @@ export function createVoice({
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
   if (!SR) return null;
 
+  const FALLBACK_LANG = "es-ES";
+
+  // Safari en iOS exige que el idioma esté instalado; se deja constancia
+  // del que realmente se está usando.
+  const langSoportado = () => {
+    try {
+      return typeof SR.available === "function";
+    } catch {
+      return false;
+    }
+  };
+
   const rec = new SR();
   rec.lang = lang;
   rec.continuous = true; // hablar largo, sin cortar por pausa
@@ -70,6 +82,15 @@ export function createVoice({
 
   rec.onerror = (e) => {
     const code = e?.error || "unknown";
+
+    // Safari rechaza locales que no tiene instalados (es-CO suele no estar).
+    // Se reintenta una sola vez con es-ES, que sí está en todos los sistemas.
+    if (code === "language-not-supported" && rec.lang !== FALLBACK_LANG) {
+      rec.lang = FALLBACK_LANG;
+      if (want) setTimeout(() => safeStart(), 200);
+      return;
+    }
+
     if (code === "no-speech" || code === "aborted") return; // normales en continuo
     want = false;
     running = false;

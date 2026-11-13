@@ -128,3 +128,11 @@ test("no reabre si el usuario ya cortó", async () => {
 
   globalThis.SpeechRecognition = prev;
 });
+
+test("si el navegador no tiene SpeechRecognition, no hay voz", () => {
+  const prev = globalThis.webkitSpeechRecognition;
+  delete globalThis.webkitSpeechRecognition;
+  delete globalThis.SpeechRecognition;
+  assert.equal(createVoice(), null);
+  if (prev) globalThis.webkitSpeechRecognition = prev;
+});
