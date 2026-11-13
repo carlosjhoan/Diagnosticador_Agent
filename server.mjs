@@ -341,6 +341,17 @@ async function handleRequest(req, res) {
       model: hasKey ? process.env.DEEPSEEK_MODEL || "deepseek-flash" : null,
       jev: Boolean(process.env.TYPESAFE_API_KEY),
       stream: true,
+      // diagnóstico de despliegue: nunca expone valores, sólo largos
+      build: {
+        node: process.version,
+        deploy: process.env.RAILWAY_DEPLOYMENT_ID ? "railway" : "local",
+        commit: (process.env.RAILWAY_GIT_COMMIT_SHA || "").slice(0, 7) || null,
+        env: {
+          deepseek: process.env.DEEPSEEK_API_KEY ? process.env.DEEPSEEK_API_KEY.length : 0,
+          typesafe: process.env.TYPESAFE_API_KEY ? process.env.TYPESAFE_API_KEY.length : 0,
+          variables: Object.keys(process.env).filter((k) => /KEY|TOKEN|SECRET|RAILWAY/.test(k)).length,
+        },
+      },
     });
   }
 
