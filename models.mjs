@@ -301,6 +301,47 @@ async function jevAsk(key, state, questions) {
   return res.json();
 }
 
+/**
+ * Índice mínimo para que Jev valide alcance.
+ * El grafo completo (con evidencia, matrices y aristas) supera el límite de
+ * tokens del proveedor: para decidir "¿esto es del dominio?" basta con
+ * los nombres de proyecto, etapas y pasos.
+ */
+function compactScope(g) {
+  const proyectos = (g?.diagnostics || []).map((p) => ({
+    proyecto: p.nombre,
+    etapas: (p.etapas || []).map((e) => e.titulo),
+    pasos: (p.nodos || []).map((n) => n.nombre),
+  }));
+
+  if (proyectos.length) return { proyectos };
+
+  // respaldo: el grafo viejo, si todavía no hay diagnósticos
+  return {
+    proyectos: (g?.projects || []).map((p) => ({
+      proyecto: p.name,
+      hallazgos: (p.findings || []).map((f) => f.claim),
+    })),
+  };
+}
+
+/** Versión para auditar: agrega el resumen, que es donde viven las afirmaciones. */
+function compactAudit(g) {
+  const proyectos = (g?.diagnostics || []).map((p) => ({
+    proyecto: p.nombre,
+    pasos: (p.nodos || []).map((n) => ({
+      nombre: n.nombre,
+      estado: `${n.integracion}/${n.calidad}`,
+      resumen: n.l1,
+      falta: (n.l2?.falta || []).slice(0, 2),
+    })),
+  }));
+
+  if (proyectos.length) return { proyectos };
+
+  return { proyectos: (g?.projects || []).map((p) => ({ proyecto: p.name, hallazgos: p.findings })) };
+}
+
 export async function jevScopeMany(question, intents, g) {
   const key = process.env.TYPESAFE_API_KEY;
   if (!key) return null;
@@ -343,7 +384,7 @@ export async function jevScopeMany(question, intents, g) {
 
   const res = await jevAsk(
     key,
-    { pregunta_original: question, intenciones: intents.map((i) => i.texto), alcance: g },
+    { pregunta_original: question, intenciones: intents.map((i) => i.texto), alcance: compactScope(g) },
     questions
   );
 
@@ -368,7 +409,7 @@ export async function jevVerify(question, spec, g) {
 
   const body = {
     model: env("TYPESAFE_MODEL", "jev-latest"),
-    state: JSON.stringify({ pregunta: question, grafo: g, salida_a_auditar: spec }),
+    state: JSON.stringify({ pregunta: question, grafo: compactAudit(g), salida_a_auditar: spec }),
     questions: {
       respaldada: {
         type: "noul",
