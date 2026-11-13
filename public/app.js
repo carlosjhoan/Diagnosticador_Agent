@@ -1526,7 +1526,7 @@ let runSeq = 0;
 async function ask(text, { params = null, silent = false } = {}) {
   const id = ++runSeq;
   stopEverything();
-  voiceBase = "";
+  muteVoice();
   voice?.stop();
   micEl.classList.remove("has-draft");
 
@@ -1822,6 +1822,17 @@ el("confirm")?.addEventListener("close", onConfirmClose);
 let meter = null;
 let meterToken = 0;
 let voiceBase = "";
+// Al enviar se corta el dictado, pero el motor puede entregar un resultado
+// tardío. Durante este lapso se ignoran para que no repueblen el campo.
+let voiceMuted = false;
+let voiceMuteTimer = null;
+
+function muteVoice(ms = 1200) {
+  voiceMuted = true;
+  voiceBase = "";
+  clearTimeout(voiceMuteTimer);
+  voiceMuteTimer = setTimeout(() => (voiceMuted = false), ms);
+}
 
 async function startListeningUI() {
   const token = ++meterToken;
@@ -1864,7 +1875,11 @@ const voice = createVoice({
     } else {
       stopListeningUI();
       // sólo se normaliza el texto si venía de un dictado; nunca se pisa lo escrito
-      if (voiceBase) {
+      if (voiceMuted) {
+        micEl.classList.remove("has-draft");
+        micEl.classList.remove("is-listening");
+        micEl.setAttribute("aria-pressed", "false");
+      } else if (voiceBase) {
         inputEl.value = voiceBase.trimEnd();
         growInput();
         updateSend();
@@ -1872,11 +1887,13 @@ const voice = createVoice({
     }
   },
   onPartial(text) {
+    if (voiceMuted) return;
     inputEl.value = text ? voiceBase + text : voiceBase.trimEnd();
     growInput();
     updateSend();
   },
   onFinal(text) {
+    if (voiceMuted) return;
     voiceBase = appendText(voiceBase, text) + " ";
     inputEl.value = voiceBase.trimEnd();
     growInput();
