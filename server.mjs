@@ -457,10 +457,26 @@ async function handleRequest(req, res) {
 }
 
 const server = createServer(handleRequest).listen(PORT, () => {
+  // En un hosting el puerto y la dirección importan: quedan en el log.
+  const addr = server.address();
+  const donde = typeof addr === "object" && addr ? `${addr.address}:${addr.port}` : String(PORT);
+  const entorno = process.env.RAILWAY_ENVIRONMENT ? "railway" : "local";
+  const commit = (process.env.RAILWAY_GIT_COMMIT_SHA || "").slice(0, 7) || "sin-commit";
+
   console.log(`\n  Diagnóstico agéntico  →  http://localhost:${PORT}`);
+  console.log(`  escuchando en ${donde} · entorno ${entorno} · commit ${commit}`);
   console.log(`  ${process.env.DEEPSEEK_API_KEY ? "DeepSeek conectado" : "Sin DEEPSEEK_API_KEY: modo demo por palabras clave"}`);
   console.log(`  SSE activo · ${process.env.DEEPSEEK_API_KEY ? "" : "sin "}stream\n`);
 });
+
+// señales del hosting: se registra el cierre para saber quién lo pidió
+for (const sig of ["SIGTERM", "SIGINT"]) {
+  process.on(sig, () => {
+    console.log(`[arranque] recibí ${sig}: cerrando`);
+    server.close(() => process.exit(0));
+    setTimeout(() => process.exit(0), 3000).unref();
+  });
+}
 
 server.on("error", (e) => {
   if (e.code === "EADDRINUSE") {
