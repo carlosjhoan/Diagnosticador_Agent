@@ -261,9 +261,11 @@ export function abrirMetrica(anchor, project, tipo) {
     '<ul class="mp-list">' +
     filas
       .map(
-        (f) =>
+        (f, i) =>
           '<li data-t="' +
           f.tono +
+          '" style="--i:' +
+          i +
           '"><span class="mp-ico">' +
           f.icono +
           '</span><span class="mp-name">' +
@@ -281,11 +283,18 @@ export function abrirMetrica(anchor, project, tipo) {
 
   const r = anchor.getBoundingClientRect();
   const mr = el.getBoundingClientRect();
-  let left = Math.min(r.left, window.innerWidth - mr.width - 12);
-  let top = r.bottom + 10;
-  if (top + mr.height > window.innerHeight - 12) top = Math.max(12, r.top - mr.height - 10);
-  el.style.left = Math.max(12, left) + "px";
-  el.style.top = top + "px";
+  const margen = 20;
+
+  // se alinea con el ancla, pero nunca se pega a los bordes
+  let left = r.left;
+  if (left + mr.width > window.innerWidth - margen) left = r.right - mr.width;
+  left = Math.max(margen, Math.min(left, window.innerWidth - mr.width - margen));
+
+  let top = r.bottom + 12;
+  if (top + mr.height > window.innerHeight - margen) top = Math.max(margen, r.top - mr.height - 12);
+
+  el.style.left = Math.round(left) + "px";
+  el.style.top = Math.round(top) + "px";
 
   setTimeout(() => {
     document.addEventListener("click", fueraMetrica, true);
