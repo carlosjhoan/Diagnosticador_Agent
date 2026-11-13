@@ -1,0 +1,101 @@
+{
+  "question": "¿Qué debería recibir la Landing?",
+  "capturedAt": "2026-11-12T03:08:09.755Z",
+  "ms": 9626,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Lo que la Landing debería recibir",
+    "story": "La Landing está diseñada para enviar el lead al Cotizador bajo el contrato sng-public-experience-v1, pero ese envío está roto: la URL del Cotizador está vacía y el contrato tiene un TODO abierto sobre ideaPhoto. Del otro lado tampoco vuelve nada útil: el agendamiento devuelve 503 por diseño y las imágenes apuntan a rutas locales inexistentes por la variable de media vacía.",
+    "projectId": "landing",
+    "focus": [
+      "L-C2",
+      "L-A1",
+      "L-M1"
+    ],
+    "layout": [
+      {
+        "type": "two-col",
+        "props": {
+          "left": {
+            "title": "Debería recibir",
+            "items": [
+              "Confirmación del Cotizador de que el lead fue aceptado (contrato sng-public-experience-v1)",
+              "Una reserva real del agendamiento con asesor, no un mock",
+              "URL base de media resuelta para las 6 escenas y las imágenes",
+              "Un destino accionable para el CTA de contacto: mail, teléfono o WhatsApp"
+            ]
+          },
+          "right": {
+            "title": "Recibe hoy",
+            "items": [
+              "Nada: la URL del Cotizador está vacía y el contrato tiene un TODO abierto sobre ideaPhoto",
+              "503 en producción por diseño: el flujo de cita termina en mock",
+              "NEXT_PUBLIC_MEDIA_BASE_URL vacía: rutas locales inexistentes",
+              "El CTA de Contacto apunta a /experiencia: el contacto solo se lee"
+            ]
+          }
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "danger",
+          "title": "El circuito de retorno no existe",
+          "text": "El envío del lead al Cotizador está roto y el agendamiento vive sobre un mock: la Landing no recibe confirmación de nada de lo que el usuario hace. Un lead que no convierte desaparece sin rastro, sin embudo medible."
+        }
+      },
+      {
+        "type": "evidence",
+        "props": {
+          "rows": [
+            {
+              "id": "L-C2",
+              "ref": ".env.example:3, src/lib/media-url.ts",
+              "note": "Media base vacía"
+            },
+            {
+              "id": "L-A1",
+              "ref": "src/server/scheduling/provider.ts:7-10",
+              "note": "503 por diseño"
+            },
+            {
+              "id": "L-A2",
+              "ref": "src/server/scheduling/http.ts:8",
+              "note": "Sin rate limiting ni verificación del submissionId"
+            },
+            {
+              "id": "L-M1",
+              "ref": "home-content.ts",
+              "note": "CTA de Contacto apunta a /experiencia"
+            }
+          ]
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "¿Qué debería recibir la Landing?",
+        "proyecto": "landing",
+        "tipo": "conexion",
+        "score": 0.93,
+        "inScope": true
+      }
+    ],
+    "lectura": "Entendí que preguntás qué debería recibir la Landing.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.79,
+        "responde": 0.96,
+        "severidad": 0.78
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4422,
+        "output_tokens": 57
+      }
+    }
+  }
+}

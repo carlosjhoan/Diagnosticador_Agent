@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Diagnóstico agéntico - Steel and Glass</title>
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img class="brand-mark" src="./assets/logo-mark.png" alt="Steel and Glass" width="390" height="56" />
+      <span class="brand-sub">diagnóstico agéntico</span>
+    </div>
+    <div class="topbar-right">
+      <button class="session" id="session" type="button" aria-haspopup="dialog" aria-expanded="false" hidden></button>
+      <div class="status" id="status" data-state="cargando" title="Iniciando" aria-label="Estado: iniciando">
+        <span class="s-dot" aria-hidden="true"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="deck">
+    <aside class="rail" id="rail" aria-label="conversaciones">
+      <div class="rail-head">
+        <span class="rail-label">conversaciones</span>
+        <button type="button" class="rail-btn" id="rail-toggle" aria-pressed="false" title="Ocultar conversaciones" aria-controls="rail">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M9.5 4v16"/>
+          </svg>
+        </button>
+      </div>
+      <div class="rail-tabs" id="rail-tabs">
+        <button type="button" data-tab="active" class="is-on">Activas</button>
+        <button type="button" data-tab="archived">Archivadas</button>
+      </div>
+      <div class="sessions" id="sessions"></div>
+      <button class="new-chat" id="new-chat" type="button">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.5 12.2a8.2 8.2 0 0 1-8.5 8.1 8.9 8.9 0 0 1-3.6-.8L3.5 21l1.4-4.4a8 8 0 0 1-1.1-4.2A8.2 8.2 0 0 1 12 4.2a8.2 8.2 0 0 1 8.5 8Z" />
+          <path d="M12 9.2v5.6M9.2 12.2h5.6" />
+        </svg>
+        <span>Nuevo chat</span>
+      </button>
+    </aside>
+
+    <section class="viewport">
+      <section class="canvas-wrap">
+        <div class="progress" id="progress" hidden></div>
+        <section class="canvas" id="canvas" aria-live="polite"></section>
+      </section>
+
+      <footer class="dock">
+        <form class="composer" id="composer">
+          <span class="wave" id="wave" hidden aria-hidden="true">
+            <i style="--k: 0.55"></i>
+            <i style="--k: 0.95"></i>
+            <i style="--k: 0.7"></i>
+            <i style="--k: 1.15"></i>
+            <i style="--k: 0.6"></i>
+          </span>
+          <textarea
+            id="input"
+            rows="1"
+            aria-label="consulta"
+            placeholder="¿Qué información del diagnóstico quieres que te muestre?"
+          ></textarea>
+          <button type="button" id="mic" class="mic" aria-label="Hablar" aria-pressed="false" hidden>
+            <span class="mic-dot" aria-hidden="true"></span>
+            <svg class="icon-mic" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+              <rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.7" />
+              <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3" fill="none" stroke="currentColor"
+                stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+            <svg class="icon-stop" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
+              <rect x="7.5" y="7.5" width="9" height="9" rx="1.6" fill="currentColor" />
+            </svg>
+          </button>
+          <button type="submit" id="send" class="send" aria-label="Enviar consulta" disabled>
+            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+              <path d="M21.5 2.5 2.8 9.9l6.9 3.4 3.4 6.9 8.4-17.7Z" fill="none" stroke="currentColor"
+                stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9.7 13.3 21.5 2.5" fill="none" stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round" />
+            </svg>
+          </button>
+        </form>
+        <div class="hint" id="hint"></div>
+      </footer>
+    </section>
+  </main>
+
+  <dialog class="timeline" id="timeline">
+    <header class="tl-head">
+      <p class="tl-q" id="tl-q"></p>
+      <button type="button" class="tl-close" id="tl-close" aria-label="Cerrar">✕</button>
+    </header>
+    <ol class="tl-steps" id="tl-steps"></ol>
+    <footer class="tl-foot" id="tl-foot"></footer>
+  </dialog>
+
+  <dialog class="email" id="email" aria-labelledby="em-heading">
+    <div class="em-card">
+      <header class="em-head">
+        <p class="em-kicker">enviar por correo</p>
+        <h2 class="em-title" id="em-heading">Preparar el reporte</h2>
+        <button type="button" class="em-close" id="em-close" aria-label="Cerrar">✕</button>
+      </header>
+
+      <div class="em-body">
+        <label class="em-label" for="em-input">Destinatarios</label>
+        <div class="em-field" id="em-field">
+          <div class="em-chips" id="em-chips"></div>
+          <input id="em-input" class="em-input em-input-inline" type="text" autocomplete="off" spellcheck="false"
+                 placeholder="nombre@empresa.com" />
+        </div>
+        <p class="em-hint" id="em-hint"></p>
+
+        <label class="em-label" for="em-subject">Asunto</label>
+        <input id="em-subject" class="em-input" type="text" maxlength="90" />
+
+        <label class="em-label" for="em-note">Nota para el destinatario <span class="em-opt">opcional</span></label>
+        <input id="em-note" class="em-input" type="text" maxlength="120" placeholder="Para revisar antes del viernes" />
+
+        <p class="em-preview-line">Se envía: <strong id="em-preview"></strong></p>
+        <p class="em-dry" id="em-dry" hidden></p>
+        <div id="em-result"></div>
+      </div>
+
+      <footer class="em-foot">
+        <button type="button" class="em-cancel" id="em-cancel">Cancelar</button>
+        <button type="button" class="em-send" id="em-send" disabled>Enviar</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog class="nmodal" id="nmodal" aria-labelledby="nm-title">
+    <div class="nm-card">
+      <header class="nm-head">
+        <div class="nm-head-main">
+          <span class="nm-id" id="nm-id"></span>
+          <h2 class="nm-title" id="nm-title"></h2>
+        </div>
+        <div class="nm-head-signals">
+          <span class="nm-signal" id="nm-impl"></span>
+          <span class="nm-signal" id="nm-rob"></span>
+        </div>
+        <button type="button" class="nm-close" id="nm-close" aria-label="Cerrar">✕</button>
+      </header>
+
+      <div class="nm-tabs" id="nm-tabs" role="tablist"></div>
+      <div class="nm-body" id="nm-body" role="tabpanel"></div>
+
+      <footer class="nm-foot">
+        <button type="button" class="nm-nav" id="nm-prev" aria-label="Nodo anterior">←</button>
+        <span class="nm-pos" id="nm-pos"></span>
+        <button type="button" class="nm-nav" id="nm-next" aria-label="Nodo siguiente">→</button>
+        <button type="button" class="nm-ask" id="nm-ask">Preguntar al agente</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog class="confirm" id="confirm" aria-labelledby="cf-title">
+    <form method="dialog" class="confirm-card">
+      <p class="cf-kicker" id="cf-kicker">eliminar sesión</p>
+      <h2 class="cf-title" id="cf-title">Esta acción no se puede deshacer</h2>
+      <p class="cf-body" id="cf-body"></p>
+      <div class="cf-actions">
+        <button type="submit" value="cancel" class="cf-cancel">Cancelar</button>
+        <button type="submit" value="ok" class="cf-danger" id="cf-danger">Eliminar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="./livereload.js"></script>
+  <script type="module" src="./app.js"></script>
+  <script>
+    setTimeout(function () {
+      var s = document.getElementById("status");
+      if (s && s.textContent.trim().toLowerCase() === "cargando") {
+        s.textContent = "el cliente no arrancó";
+        s.className = "status offline";
+        document.getElementById("canvas").innerHTML =
+          '<div class="view"><div class="b-callout c-danger"><strong>El cliente no arrancó</strong>' +
+          "<span>Abrí la consola del navegador: hay un error en app.js o en un módulo importado.</span></div></div>";
+      }
+    }, 2500);
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "question": "¿qué falta en el brain y cuánto sale una ventana de aluminio?",
+  "capturedAt": "2026-11-12T03:08:42.526Z",
+  "ms": 8497,
+  "response": {
+    "v": 2,
+    "view": "gaps",
+    "title": "Qué falta en el Brain gerencial",
+    "story": "Al Brain le faltan los tres dominios que lo definirían como sistema de registro: RBAC, inventario y personal. El agente existe pero es de solo lectura, y ninguno de los tres servicios tiene CI, así que la cobertura de ~150 tests es teórica. Sobre el precio de una ventana de aluminio no hay dato en el grafo: el corpus de precios de Comercial está vacío en producción y hay dos motores que pueden dar números distintos.",
+    "projectId": "gerencial",
+    "focus": [],
+    "degraded": true,
+    "intents": [
+      {
+        "texto": "¿Qué falta en el brain gerencial?",
+        "proyecto": "gerencial",
+        "tipo": "brecha",
+        "score": 0.97,
+        "inScope": true
+      },
+      {
+        "texto": "¿Cuánto cuesta una ventana de aluminio?",
+        "proyecto": "comercial",
+        "tipo": "otro",
+        "score": 0.04,
+        "inScope": false
+      }
+    ],
+    "lectura": "Preguntás qué falta en el brain y cuánto cuesta una ventana de aluminio.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.9,
+        "responde": 0.76,
+        "severidad": 0.75
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4083,
+        "output_tokens": 57
+      }
+    }
+  }
+}

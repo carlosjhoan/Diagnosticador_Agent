@@ -1,0 +1,397 @@
+{
+  "meta": {
+    "title": "Diagnóstico - 3 proyectos Steel and Glass",
+    "generated": "2026-11-11",
+    "source": "Lectura estática de Docs/diagnosticos de cada repositorio (2026-11-10)",
+    "narrative": "El lead entra por la Landing, se pre-cotiza en el Comercial y nunca llega a Gerencial Brain. Tres sistemas, tres identidades, cero continuidad."
+  },
+  "projects": [
+    {
+      "id": "landing",
+      "name": "Landing",
+      "subtitle": "SnG-Experience-Frontend",
+      "role": "Puerta de entrada pública y captura del lead",
+      "status": "Producto funcional en frontend. Integraciones incompletas.",
+      "stack": [
+        "Next.js 16.3",
+        "React 19.2",
+        "TypeScript",
+        "Tailwind 4",
+        "Vercel"
+      ],
+      "expected": [
+        "Sitio público con identidad de marca y proyectos verificados",
+        "Recorrido interactivo que captura 37 datos del proyecto",
+        "Envío del lead al Cotizador con documentos adjuntos",
+        "Agendamiento real de reunión con asesor",
+        "Contacto accionable (mail, teléfono o WhatsApp)"
+      ],
+      "delivered": [
+        "One-pager de 8 secciones y /experiencia con 6 escenas y 37 preguntas",
+        "Builder y transporte multipart bajo contrato sng-public-experience-v1",
+        "Agendamiento con validación completa, pero solo sobre un mock",
+        "3 suites de tests sobre lógica desacoplada de React"
+      ],
+      "findings": [
+        {
+          "id": "L-C1",
+          "sev": "critical",
+          "type": "risk",
+          "claim": "/experiencia se sirve con title 'Create Next App' y lang=en. La ruta que convierte queda con metadata de plantilla.",
+          "evidence": "src/app/layout.tsx:20-23"
+        },
+        {
+          "id": "L-C2",
+          "sev": "critical",
+          "type": "gap",
+          "claim": "NEXT_PUBLIC_MEDIA_BASE_URL vacía: todas las imágenes y las 6 escenas apuntan a rutas locales inexistentes.",
+          "evidence": ".env.example:3, src/lib/media-url.ts"
+        },
+        {
+          "id": "L-C3",
+          "sev": "high",
+          "type": "gap",
+          "claim": "Datos de contacto y proyectos destacados son provisionales, con TODO en código y aviso visible al usuario.",
+          "evidence": "home-content.ts:7,28"
+        },
+        {
+          "id": "L-A1",
+          "sev": "high",
+          "type": "risk",
+          "claim": "El agendamiento devuelve 503 en producción por diseño. El flujo de cita termina en mock.",
+          "evidence": "src/server/scheduling/provider.ts:7-10"
+        },
+        {
+          "id": "L-A2",
+          "sev": "high",
+          "type": "risk",
+          "claim": "Endpoints públicos sin rate limiting ni verificación server-side del submissionId antes de reservar.",
+          "evidence": "src/server/scheduling/http.ts:8, booking-service.ts:6-7"
+        },
+        {
+          "id": "L-A4",
+          "sev": "medium",
+          "type": "risk",
+          "claim": "Bucket R2 público sirviendo material que podría ser de clientes.",
+          "evidence": "next.config.ts:4"
+        },
+        {
+          "id": "L-A5",
+          "sev": "high",
+          "type": "gap",
+          "claim": "Sin CI. Los tests existen pero no están en package.json ni corren automáticamente.",
+          "evidence": "package.json"
+        },
+        {
+          "id": "L-M1",
+          "sev": "medium",
+          "type": "debt",
+          "claim": "El CTA de Contacto apunta a /experiencia: el contacto directo solo se lee, no se acciona.",
+          "evidence": "home-content.ts"
+        }
+      ]
+    },
+    {
+      "id": "comercial",
+      "name": "Comercial",
+      "subtitle": "Panel + Cotizador AI2",
+      "role": "Pre-cotización agéntica en la reunión de onboarding",
+      "status": "Pipeline de IA, no un agente. Construido como batch nocturno, usado en vivo.",
+      "stack": [
+        ".NET 10",
+        "Next.js 16.2",
+        "FastAPI",
+        "PostgreSQL",
+        "Gemini 3.6 Flash"
+      ],
+      "expected": [
+        "Recibir el lead de la Landing con sus documentos",
+        "Producir un rango defendible durante la reunión (60-90 s)",
+        "Corpus de precios gobernado, versionado y auditable",
+        "Poder medir si la extracción acierta o empeora",
+        "Un solo motor de precio con supuestos explícitos"
+      ],
+      "delivered": [
+        "Wizard de 4 pasos con workspace y evidencia por elemento",
+        "Extracción multimodal con validación Pydantic y evidencia página-hoja-celda",
+        "Selección técnica determinista y auditable (sin LLM)",
+        "Rango por cuantiles ponderados sobre cotizaciones históricas",
+        "Logs de performance por etapa, lo mejor del sistema"
+      ],
+      "findings": [
+        {
+          "id": "C-P0-1",
+          "sev": "critical",
+          "type": "risk",
+          "claim": "Un refresh o cierre de pestaña deja el requerimiento en Processing para siempre: todo POST posterior devuelve 409 y no hay job de limpieza.",
+          "evidence": "ProcessRequirementService.cs:361-368, :122-126"
+        },
+        {
+          "id": "C-P0-2",
+          "sev": "critical",
+          "type": "risk",
+          "claim": "Cero retries y cero circuit breaker. Un 503 de Gemini al minuto 9 es pérdida total de 10 minutos de trabajo.",
+          "evidence": "gemini.py:10-12, gemini_extraction.py:493-497"
+        },
+        {
+          "id": "C-P0-3",
+          "sev": "critical",
+          "type": "gap",
+          "claim": "No hay cola: el request HTTP es el job. Tres comerciales simultáneos son tres requests de 15 minutos sin supervisión.",
+          "evidence": "ProcessClaimedDocumentProcessingAttemptService (registrado, nunca invocado)"
+        },
+        {
+          "id": "C-P0-4",
+          "sev": "critical",
+          "type": "risk",
+          "claim": "AI2 en :8000 no tiene autenticación ni rate limit. Cualquiera en la red quema la cuota de Gemini.",
+          "evidence": "cotizador/Cotizador_AI2/app/main.py:1-22"
+        },
+        {
+          "id": "C-P0-5",
+          "sev": "critical",
+          "type": "gap",
+          "claim": "El corpus de precios es la carpeta de escritorio de un desarrollador. En producción está vacío y degrada en silencio.",
+          "evidence": "appsettings.Development.json:39, appsettings.json, HistoricalQuoteCorpus.cs:26-31"
+        },
+        {
+          "id": "C-P1-6",
+          "sev": "high",
+          "type": "gap",
+          "claim": "Dos motores de pricing conviven y pueden dar números distintos para el mismo item.",
+          "evidence": "HistoricalTechnicalPriceEstimator.cs vs PreQuotePreliminaryPricing.cs:52-59"
+        },
+        {
+          "id": "C-P1-7",
+          "sev": "high",
+          "type": "gap",
+          "claim": "Sin evaluación de calidad de extracción: 33 casos de aceptación en PROPOSED_NOT_EXECUTED. No se sabe si el extractor mejoró o empeoró.",
+          "evidence": "acceptance_matrix.json, expected_checks.json"
+        },
+        {
+          "id": "C-P1-11",
+          "sev": "high",
+          "type": "gap",
+          "claim": "El histórico no guarda fecha de cotización: una de 2022 pesa igual que una de 2026 y el rango se sesga hacia abajo.",
+          "evidence": "HistoricalPricingModels.cs:92-97"
+        },
+        {
+          "id": "C-P2-13",
+          "sev": "medium",
+          "type": "gap",
+          "claim": "Sin cacheo de extracción por hash: el mismo plano re-subido cuesta otros 10 minutos.",
+          "evidence": "sin cache en gemini_extraction.py"
+        },
+        {
+          "id": "C-P1-12",
+          "sev": "medium",
+          "type": "debt",
+          "claim": "SnG_Consulter tiene el pipeline documental más disciplinado del repo y está desconectado: dos verdades sobre cómo leer un plano.",
+          "evidence": "cero referencias cruzadas en backend/AI2/frontend"
+        }
+      ]
+    },
+    {
+      "id": "gerencial",
+      "name": "Gerencial Brain",
+      "subtitle": "SnG Control + Intelligence",
+      "role": "Sistema de registro y capa de decisión gerencial",
+      "status": "Capa operativa completa y gerencia en modo lectura. Los dominios de inventario y personal no existen.",
+      "stack": [
+        ".NET 10",
+        "Next.js 16.4",
+        "Python 3.12",
+        "FastAPI",
+        "PostgreSQL",
+        "OpenAI"
+      ],
+      "expected": [
+        "Sistema de registro único de clientes, proyectos y tareas",
+        "Acceso diferenciado por rol: gerencia, administrativo y planta",
+        "Inventario y personal como dominios de primera clase",
+        "Informes generados a pedido, por voz o texto",
+        "Agente que ejecuta acciones con auditoría de autor"
+      ],
+      "delivered": [
+        "11 controllers, 12 entidades y flujo de cotizaciones con handoff a Comercial",
+        "Frontend de 8 rutas con Google Sign-In y validación server-side",
+        "Agente de voz end-to-end (STT, TTS y Realtime) con 7 herramientas",
+        "Frontend con el manejo de errores más maduro de los tres sistemas",
+        "~150 archivos de prueba entre los tres servicios"
+      ],
+      "findings": [
+        {
+          "id": "G-R1",
+          "sev": "critical",
+          "type": "gap",
+          "claim": "No existe RBAC: no hay tablas de usuarios, roles ni permisos. Tres policies comparan contra un subject en variables de entorno: una persona por rol.",
+          "evidence": "Authentication:ManagementSubject, CommercialHeadSubject, BudgetsAssigneeSubject"
+        },
+        {
+          "id": "G-R2",
+          "sev": "critical",
+          "type": "gap",
+          "claim": "Inventario no existe: cero entidades, endpoints o tools en los tres repos.",
+          "evidence": "búsqueda de inventory/inventario en Backend, Front, Intelligence"
+        },
+        {
+          "id": "G-R3",
+          "sev": "critical",
+          "type": "gap",
+          "claim": "Personal no existe: sin entidad de empleados, asistencia ni áreas como entidad (solo un enum OperationalArea).",
+          "evidence": "Dominio, sección 8"
+        },
+        {
+          "id": "G-R4",
+          "sev": "high",
+          "type": "gap",
+          "claim": "El agente es read-only: no crea tareas, no mueve fechas, no genera reportes, no documenta.",
+          "evidence": "Intelligence, sección 4.3"
+        },
+        {
+          "id": "G-R5",
+          "sev": "high",
+          "type": "risk",
+          "claim": "El ID token vive en sessionStorage y no hay middleware.ts: robable por XSS, sin protección de rutas server-side.",
+          "evidence": "auth client, ausencia de middleware.ts"
+        },
+        {
+          "id": "G-R6",
+          "sev": "high",
+          "type": "gap",
+          "claim": "Ninguno de los tres servicios tiene CI. La cobertura de ~150 tests es teórica.",
+          "evidence": "ausencia de .github/workflows"
+        },
+        {
+          "id": "G-R7",
+          "sev": "medium",
+          "type": "risk",
+          "claim": "Sin observabilidad cruzada: ante una respuesta incorrecta no se puede saber si falló front, proxy, Python o backend.",
+          "evidence": "sin requestId propagado entre servicios"
+        },
+        {
+          "id": "G-R8",
+          "sev": "medium",
+          "type": "debt",
+          "claim": "La UI invierte la lógica: showCreation = isManagement === false. Gerencia no puede crear clientes ni proyectos.",
+          "evidence": "sección 5, puntos de atención"
+        }
+      ]
+    }
+  ],
+  "seams": [
+    {
+      "id": "S1",
+      "from": "landing",
+      "to": "comercial",
+      "label": "Envío del lead",
+      "contract": "POST /api/public/experience-submissions (sng-public-experience-v1)",
+      "status": "broken",
+      "impact": "El lead no entra al sistema: la URL del Cotizador está vacía y el contrato tiene un TODO abierto sobre ideaPhoto."
+    },
+    {
+      "id": "S2",
+      "from": "comercial",
+      "to": "gerencial",
+      "label": "Cotización aprobada",
+      "contract": "Workbook FpPro + handoff de presupuestos",
+      "status": "partial",
+      "impact": "Una cotización aprobada no se convierte sola en proyecto ni en tareas. El handoff es manual."
+    },
+    {
+      "id": "S3",
+      "from": "landing",
+      "to": "gerencial",
+      "label": "Registro del lead",
+      "contract": "No existe",
+      "status": "missing",
+      "impact": "Un lead que no convierte desaparece sin rastro. No hay embudo medible."
+    },
+    {
+      "id": "S4",
+      "from": "comercial",
+      "to": "gerencial",
+      "label": "Identidad de usuario",
+      "contract": "Google JWT en los dos, pero con policies distintas",
+      "status": "fragmented",
+      "impact": "Tres modelos de identidad: anónimo, JWT con subject por env var, y lectura de roles. Nadie es la misma persona en los tres sistemas."
+    },
+    {
+      "id": "S5",
+      "from": "landing",
+      "to": "gerencial",
+      "label": "CI y calidad",
+      "contract": "No existe",
+      "status": "broken",
+      "impact": "Ninguno de los tres repos tiene pipeline. ~150 tests se ejecutan a mano o no se ejecutan."
+    },
+    {
+      "id": "S6",
+      "from": "comercial",
+      "to": "comercial",
+      "label": "SnG_Consulter",
+      "contract": "Pipeline documental completo",
+      "status": "missing",
+      "impact": "El mejor lector de planos del ecosistema está desconectado. Hay dos verdades sobre cómo leer un plano."
+    }
+  ],
+  "process": {
+    "id": "prequote",
+    "name": "Pre-cotización agéntica",
+    "summary": "Ocho pasos entre la reunión y el rango. El request HTTP es el job: no hay cola, ni reintentos, ni fuente de precio gobernada.",
+    "breakPoint": "El flujo se corta en el paso 3 si el comercial refresca la pestaña, y no hay forma de retomarlo.",
+    "steps": [
+      {
+        "n": 1,
+        "label": "Alta del cliente",
+        "detail": "Cliente → Proyecto → Pre-cotización. Solo el creador puede procesar.",
+        "status": "ok"
+      },
+      {
+        "n": 2,
+        "label": "Upload del requerimiento",
+        "detail": "Hasta 10 archivos · 100 MiB · se persisten en disco local",
+        "status": "warn"
+      },
+      {
+        "n": 3,
+        "label": "POST /process",
+        "detail": "Síncrono y bloqueante, timeout de 900 s",
+        "status": "fail",
+        "finding": "C-P0-1"
+      },
+      {
+        "n": 4,
+        "label": "Extracción con Gemini",
+        "detail": "Discovery + scope + enrichment secuencial: 10 a 15 min",
+        "status": "fail",
+        "finding": "C-P0-2"
+      },
+      {
+        "n": 5,
+        "label": "Propuesta técnica",
+        "detail": "Selección determinista por reglas, sin LLM",
+        "status": "ok"
+      },
+      {
+        "n": 6,
+        "label": "Pricing histórico",
+        "detail": "Comparables secuenciales contra el corpus",
+        "status": "fail",
+        "finding": "C-P0-5"
+      },
+      {
+        "n": 7,
+        "label": "Rango y confianza",
+        "detail": "Cuantiles ponderados mínimo / esperado / máximo",
+        "status": "blocked"
+      },
+      {
+        "n": 8,
+        "label": "Excel FpPro",
+        "detail": "Entregable manual, fuera de la reunión",
+        "status": "blocked"
+      }
+    ]
+  }
+}

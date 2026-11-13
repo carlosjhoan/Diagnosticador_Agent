@@ -1,0 +1,42 @@
+{
+  "question": "¿Qué debería recibir la Landing?",
+  "capturedAt": "2026-11-11T20:04:45.367Z",
+  "ms": 6934,
+  "response": {
+    "view": "gaps",
+    "title": "Lo que la Landing debería recibir y hoy no recibe",
+    "story": "La Landing está bien construida como frontend, pero le falta recibir los datos que la conectan con el resto. Hoy le falta la URL del Cotizador para enviar el lead, la base de medios para imágenes y escenas, y datos reales de contacto y proyectos verificados. Además debería recibir un proveedor de agendamiento real en vez de un mock, y una identidad compartida con Comercial y Gerencial para que el lead sea la misma persona en todo el recorrido.",
+    "projectId": "landing",
+    "focus": [
+      "S1",
+      "L-C2",
+      "L-C3",
+      "L-A1",
+      "S4"
+    ],
+    "intents": [
+      {
+        "texto": "¿Qué información o datos debería recibir la Landing?",
+        "proyecto": "landing",
+        "tipo": "conexion",
+        "score": 0.89,
+        "inScope": true
+      }
+    ],
+    "lectura": "Entendí que preguntás qué información o datos debería recibir la Landing.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.8,
+        "responde": 0.84,
+        "severidad": 0.8
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 3630,
+        "output_tokens": 57
+      }
+    }
+  }
+}

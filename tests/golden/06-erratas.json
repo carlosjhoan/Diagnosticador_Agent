@@ -1,0 +1,40 @@
+{
+  "question": "che q riesgos tengo en el comersial porfa",
+  "capturedAt": "2026-11-11T20:04:55.210Z",
+  "ms": 5112,
+  "response": {
+    "view": "risks",
+    "title": "Riesgos críticos de Comercial",
+    "story": "En Comercial hay tres riesgos críticos registrados en el grafo. Un refresh o cierre de pestaña deja el requerimiento en Processing para siempre, sin job de limpieza. Además no hay retries ni circuit breaker ante fallas de Gemini, y AI2 en :8000 no tiene autenticación ni rate limit.",
+    "projectId": "comercial",
+    "focus": [
+      "C-P0-1",
+      "C-P0-2",
+      "C-P0-4"
+    ],
+    "intents": [
+      {
+        "texto": "¿Qué riesgos tengo en el proyecto comercial?",
+        "proyecto": "comercial",
+        "tipo": "riesgo",
+        "score": 0.97,
+        "inScope": true
+      }
+    ],
+    "lectura": "Pregunta qué riesgos tenés en el proyecto comercial.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.73,
+        "responde": 0.68,
+        "severidad": 0.93
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 3596,
+        "output_tokens": 57
+      }
+    }
+  }
+}

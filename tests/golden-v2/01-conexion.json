@@ -1,0 +1,115 @@
+{
+  "question": "¿Cómo se conectan la Landing y el Comercial?",
+  "capturedAt": "2026-11-12T03:07:38.727Z",
+  "ms": 10060,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Landing y Comercial: el contrato que no cierra",
+    "story": "",
+    "projectId": null,
+    "focus": [
+      "S1",
+      "S4"
+    ],
+    "layout": [
+      {
+        "type": "flowanim",
+        "props": {
+          "nodes": [
+            {
+              "id": "lead",
+              "label": "Lead en /experiencia",
+              "kind": "human"
+            },
+            {
+              "id": "contract",
+              "label": "POST /api/public/experience-submissions",
+              "kind": "data"
+            },
+            {
+              "id": "ai2",
+              "label": "Cotizador AI2",
+              "kind": "system"
+            }
+          ],
+          "edges": [
+            {
+              "from": "lead",
+              "to": "contract",
+              "label": "37 respuestas + adjuntos",
+              "status": "ok"
+            },
+            {
+              "from": "contract",
+              "to": "ai2",
+              "label": "sng-public-experience-v1 · URL vacía + TODO ideaPhoto",
+              "status": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "type": "list",
+        "props": {
+          "items": [
+            {
+              "title": "S1 · Envío del lead: roto",
+              "text": "El lead no entra al sistema: la URL del Cotizador está vacía y el contrato tiene un TODO abierto sobre ideaPhoto.",
+              "tag": "broken",
+              "tone": "critical",
+              "evidence": "seams.S1"
+            },
+            {
+              "title": "S4 · Identidad de usuario: fragmentada",
+              "text": "Google JWT en los dos extremos, pero con policies distintas. Del lado Landing el acceso es anónimo; del lado Comercial el subject sale de una variable de entorno.",
+              "tag": "fragmented",
+              "tone": "high",
+              "evidence": "seams.S4"
+            },
+            {
+              "title": "S3 · Registro del lead: inexistente",
+              "text": "No hay contrato de registro: un lead que no convierte desaparece sin rastro y no hay embudo medible.",
+              "tag": "missing",
+              "tone": "info",
+              "evidence": "seams.S3"
+            }
+          ],
+          "ordered": false
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "warn",
+          "title": "Consecuencia operativa",
+          "text": "El tramo Landing hacia Comercial depende hoy de un endpoint cuyo destino no está configurado. Cualquier continuidad del lead hacia Gerencial Brain queda bloqueada aguas arriba por esta misma costura."
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "¿Cómo se conectan la Landing y el Comercial?",
+        "proyecto": "ninguno",
+        "tipo": "conexion",
+        "score": 0.97,
+        "inScope": true
+      }
+    ],
+    "lectura": "Entendí que pregunta cómo se vinculan la Landing y el Comercial.",
+    "verification": {
+      "status": "rejected",
+      "scores": {
+        "respaldada": 0.72,
+        "responde": 0.94,
+        "severidad": 0.38
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4430,
+        "output_tokens": 57
+      }
+    }
+  }
+}

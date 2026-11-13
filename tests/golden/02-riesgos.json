@@ -1,0 +1,42 @@
+{
+  "question": "¿Qué riesgos corro en el Comercial?",
+  "capturedAt": "2026-11-11T20:04:32.990Z",
+  "ms": 7134,
+  "response": {
+    "view": "risks",
+    "title": "Riesgos del Comercial",
+    "story": "En Comercial el riesgo principal es que el trabajo en vivo se pierde: un refresh deja el requerimiento en Processing para siempre y un 503 de Gemini sin retries ni circuit breaker tira diez minutos de trabajo. Además AI2 no tiene autenticación ni rate limit, así que cualquiera en la red puede quemar la cuota. No hay cola: tres comerciales simultáneos son tres requests largos sin supervisión, y el corpus de precios vacío degrada en silencio.",
+    "projectId": "comercial",
+    "focus": [
+      "C-P0-1",
+      "C-P0-2",
+      "C-P0-4",
+      "C-P0-3",
+      "C-P0-5"
+    ],
+    "intents": [
+      {
+        "texto": "¿Qué riesgos corro en el proyecto Comercial?",
+        "proyecto": "comercial",
+        "tipo": "riesgo",
+        "score": 0.97,
+        "inScope": true
+      }
+    ],
+    "lectura": "Pregunta por los riesgos que corrés en el proyecto Comercial.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.88,
+        "responde": 0.93,
+        "severidad": 0.87
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 3640,
+        "output_tokens": 57
+      }
+    }
+  }
+}

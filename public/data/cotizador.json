@@ -1,0 +1,1574 @@
+{
+ "meta": {
+  "title": "Diagnóstico avanzado — Pre-cotizador Steel & Glass",
+  "version": "1.0",
+  "date": "2026-11-12",
+  "purpose": "Fuente de datos estructurada para presentaciones y animaciones: etapas, recorrido, nodos, valoraciones y hallazgos.",
+  "language": "es",
+  "source_markdown": "Docs/Diagnosticos/DIAGNOSTICO_AVANZADO_PRECOTIZADOR.md",
+  "baseline": [
+   {
+    "repo": "Comercial/backend/Cotizador_Backend",
+    "branch": "feature/public-experience-intake",
+    "commit": "5e3e26c",
+    "role": "orquestacion, intake publico, jobs durables, pricing, diagnosis"
+   },
+   {
+    "repo": "Comercial/panel/Cotizador_Frontend",
+    "branch": "feature/project-workspace-commercial-ui",
+    "commit": "c912087",
+    "role": "workspace comercial, diagnosis, panel de estimacion"
+   },
+   {
+    "repo": "Comercial/cotizador/Cotizador_AI2",
+    "branch": "feature/testWithNewProjects",
+    "commit": "9b2968c",
+    "role": "extraccion documental y similitud tecnica"
+   },
+   {
+    "repo": "Landing/SnG-Experience-Frontend",
+    "branch": "main",
+    "commit": "d4e1d45",
+    "role": "landing publica y experiencia de 37 preguntas"
+   }
+  ],
+  "scoring_rules": {
+   "implemented": [
+    "TRUE",
+    "PARTIAL",
+    "FALSE"
+   ],
+   "reliability": [
+    0,
+    1,
+    2
+   ],
+   "quality": [
+    "solid",
+    "works_not_best",
+    "needs_work"
+   ],
+   "notes": [
+    "La configuracion ausente (Client ID, secrets, connection strings) no se evalua como defecto.",
+    "No verificado en ejecucion no resta: la evaluacion es por lectura de codigo y coherencia de la logica.",
+    "reliability 2 = logica determinista o explicitamente condicionada, con validaciones y sin caminos silenciosos.",
+    "reliability 1 = funciona en el caso de exito con bordes no cubiertos.",
+    "reliability 0 = sin garantia logica o requisito no implementado."
+   ]
+  },
+  "stage_note": "stage es una agrupacion narrativa para la animacion; el diagnostico en Markdown detalla las dependencias entre nodos."
+ },
+ "metrics": {
+  "nodes_total": 22,
+  "implemented_true": 17,
+  "implemented_partial": 4,
+  "implemented_false": 1,
+  "reliability_2": 12,
+  "reliability_1": 9,
+  "reliability_0": 1,
+  "quality_solid": 12,
+  "quality_works_not_best": 9,
+  "quality_needs_work": 1,
+  "hypotheses": 10,
+  "findings_p0": 3,
+  "findings_p1": 6,
+  "findings_p2": 7
+ },
+ "stages": [
+  {
+   "id": "captura",
+   "order": 1,
+   "title": "Captura",
+   "subtitle": "El cliente cuenta su proyecto",
+   "summary": "Landing pública y cuestionario de 37 preguntas que envían al backend con idempotencia.",
+   "node_ids": [
+    "N01",
+    "N02",
+    "N03",
+    "N04",
+    "N05"
+   ]
+  },
+  {
+   "id": "extraccion",
+   "order": 2,
+   "title": "Pre-cotización con IA",
+   "subtitle": "Del plano al rango",
+   "summary": "Extracción documental, memoria histórica, similitud técnica y cálculo del rango.",
+   "node_ids": [
+    "N06",
+    "N07a",
+    "N07b",
+    "N08",
+    "N10b"
+   ]
+  },
+  {
+   "id": "comercial",
+   "order": 3,
+   "title": "Onboarding comercial",
+   "subtitle": "El comercial ajusta y calcula",
+   "summary": "Diagnóstico del cliente, prioridades por ítem, reglas de producto, recálculo y contrato de salida.",
+   "node_ids": [
+    "N11",
+    "N12b",
+    "N12a",
+    "N13",
+    "N09",
+    "N14",
+    "N15",
+    "N10a"
+   ]
+  },
+  {
+   "id": "plataforma",
+   "order": 4,
+   "title": "Plataforma",
+   "subtitle": "Lo que sostiene el sistema",
+   "summary": "Errores y reintentos, observabilidad, configuración y seguridad.",
+   "node_ids": [
+    "N16",
+    "N17",
+    "N18",
+    "N19"
+   ]
+  }
+ ],
+ "flow": [
+  {
+   "order": 1,
+   "node_id": "N01",
+   "label": "El cliente llega"
+  },
+  {
+   "order": 2,
+   "node_id": "N02",
+   "label": "Responde 37 preguntas"
+  },
+  {
+   "order": 3,
+   "node_id": "N03",
+   "label": "Adjunta planos"
+  },
+  {
+   "order": 4,
+   "node_id": "N04",
+   "label": "Se persiste el proyecto"
+  },
+  {
+   "order": 5,
+   "node_id": "N05",
+   "label": "Se emite el job"
+  },
+  {
+   "order": 6,
+   "node_id": "N06",
+   "label": "Se extraen los elementos"
+  },
+  {
+   "order": 7,
+   "node_id": "N07a",
+   "label": "Se buscan comparables"
+  },
+  {
+   "order": 8,
+   "node_id": "N08",
+   "label": "La IA compara"
+  },
+  {
+   "order": 9,
+   "node_id": "N13",
+   "label": "Se elige producto"
+  },
+  {
+   "order": 10,
+   "node_id": "N11",
+   "label": "El comercial revisa"
+  },
+  {
+   "order": 11,
+   "node_id": "N12b",
+   "label": "Llegan las prioridades"
+  },
+  {
+   "order": 12,
+   "node_id": "N12a",
+   "label": "Se ajustan por ítem"
+  },
+  {
+   "order": 13,
+   "node_id": "N14",
+   "label": "Se confirma el contexto"
+  },
+  {
+   "order": 14,
+   "node_id": "N09",
+   "label": "Se calcula el rango"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "N01",
+   "stage": "captura",
+   "order": 1,
+   "title": "Landing institucional",
+   "summary": "Es la cara pública de la marca y la puerta de entrada al recorrido del cliente.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Sin dependencias de terceros",
+    "Contenido y layout separados",
+    "Assets en CDN"
+   ],
+   "improve": [
+    "Metadata y datos de contacto siguen provisionales"
+   ],
+   "evidence": [
+    "Landing/SnG-Experience-Frontend/src/app/page.tsx"
+   ],
+   "affected": [
+    "negocio"
+   ]
+  },
+  {
+   "id": "N02",
+   "stage": "captura",
+   "order": 2,
+   "title": "Cuestionario del lead (37 preguntas)",
+   "summary": "El cliente cuenta su proyecto en un recorrido guiado de 6 escenas.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Configuración data-driven",
+    "Renderer genérico",
+    "37 preguntas en 18 grupos"
+   ],
+   "improve": [
+    "No hay guardado parcial: si abandona, pierde lo respondido"
+   ],
+   "evidence": [
+    "src/features/experience/config/questions.ts",
+    "src/features/experience/config/question-groups.ts"
+   ],
+   "affected": [
+    "negocio"
+   ]
+  },
+  {
+   "id": "N03",
+   "stage": "captura",
+   "order": 3,
+   "title": "Carga de archivos del proyecto",
+   "summary": "El cliente adjunta planos o fotos, y opcionalmente una foto de idea.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Validación de metadata contra bytes",
+    "Límites explícitos",
+    "Foto de idea separada de documentos técnicos"
+   ],
+   "improve": [
+    "Sin validación de firma binaria ni escaneo de malware"
+   ],
+   "evidence": [
+    "Application/PublicExperience/PublicExperiencePayloadValidation.cs:9-12,50,69",
+    "Landing/src/features/experience/submission/submit-experience.ts"
+   ],
+   "affected": [
+    "cliente",
+    "empresa"
+   ]
+  },
+  {
+   "id": "N04",
+   "stage": "captura",
+   "order": 4,
+   "title": "API de ingesta y persistencia",
+   "summary": "El envío del cliente se convierte en cliente, proyecto, pre-cotización y requerimiento.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Idempotencia por fingerprint canónico",
+    "200 en replay y 409 en conflicto",
+    "Limpieza del perdedor en una carrera",
+    "Propietario derivado de configuración"
+   ],
+   "improve": [
+    "Sin garantía distribuida entre storage y PostgreSQL ante commit incierto"
+   ],
+   "evidence": [
+    "Api/Controllers/PublicExperienceSubmissionsController.cs:13,20-21",
+    "docs/intake-publico.md"
+   ],
+   "affected": [
+    "empresa",
+    "equipo_tecnico"
+   ]
+  },
+  {
+   "id": "N05",
+   "stage": "captura",
+   "order": 5,
+   "title": "Disparo de la pre-cotización",
+   "summary": "Al recibir el proyecto, el sistema puede lanzar el análisis sin intervención humana.",
+   "implemented": "TRUE",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Job durable con estado, lease y fencing",
+    "Emisión y ejecución son condiciones separadas"
+   ],
+   "improve": [
+    "Dos flags independientes sin verificación de coherencia",
+    "Sin reintento automático",
+    "Un job Running sin supervisor requiere reconciliación manual"
+   ],
+   "evidence": [
+    "Infrastructure/Operations/ExperienceExecutionHost.cs:12-14,69-96",
+    "docs/experience-pause.md"
+   ],
+   "affected": [
+    "comercial",
+    "equipo_tecnico"
+   ]
+  },
+  {
+   "id": "N06",
+   "stage": "extraccion",
+   "order": 1,
+   "title": "Extracción de datos del archivo",
+   "summary": "El sistema lee planos, planillas y fotos y obtiene elementos con medidas, cantidades, vidrio y sistema.",
+   "implemented": "TRUE",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Mapper determinista con evidencia por elemento",
+    "Grounding de cantidades",
+    "La ruta localizada usa schema estricto y finish_reason"
+   ],
+   "improve": [
+    "La ruta legacy no tiene schema de respuesta ni tope de tokens",
+    "Un lote fallido invalida la extracción completa",
+    "Sin reintento ni resultado parcial"
+   ],
+   "evidence": [
+    "app/providers/gemini_extraction.py",
+    "app/providers/gemini_localization_v1.py:320",
+    "docs/pipeline-extraccion.md"
+   ],
+   "affected": [
+    "comercial"
+   ]
+  },
+  {
+   "id": "N07a",
+   "stage": "extraccion",
+   "order": 2,
+   "title": "Memoria histórica (corpus)",
+   "summary": "El sistema compara contra cotizaciones reales anteriores.",
+   "implemented": "TRUE",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Normalización de sistema, vidrio y acabado",
+    "Identidad de vidrio V1 con estados",
+    "Diagnóstico de calidad del corpus"
+   ],
+   "improve": [
+    "Sin fecha de cotización ni moneda validada",
+    "Sin versión de contenido del corpus",
+    "Carga por filesystem, no por fuente gobernada"
+   ],
+   "evidence": [
+    "docs/pricing.md",
+    "Infrastructure/HistoricalPricing/HistoricalQuoteCorpus.cs"
+   ],
+   "affected": [
+    "comercial",
+    "empresa"
+   ]
+  },
+  {
+   "id": "N07b",
+   "stage": "extraccion",
+   "order": 3,
+   "title": "Ventana de los últimos 3 meses",
+   "summary": "El precio debería apoyarse solo en cotizaciones recientes.",
+   "implemented": "FALSE",
+   "reliability": 0,
+   "quality": "needs_work",
+   "tone": "fail",
+   "good": [
+    "El equipo lo reconoce explícitamente como pendiente"
+   ],
+   "improve": [
+    "No existe campo de fecha en el modelo",
+    "No hay ventana temporal",
+    "No hay ajuste por inflación"
+   ],
+   "evidence": [
+    "ausencia de QuoteDate/EffectiveDate",
+    "docs/estado-actual.md"
+   ],
+   "affected": [
+    "comercial",
+    "empresa"
+   ]
+  },
+  {
+   "id": "N08",
+   "stage": "extraccion",
+   "order": 4,
+   "title": "Comparación por similitud con IA",
+   "summary": "Una IA dice qué tan parecidos son los proyectos anteriores al nuevo.",
+   "implemented": "TRUE",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Validación de correlación de IDs muy sólida",
+    "Logging por etapa con correlación",
+    "El fallo técnico se conserva como diagnóstico"
+   ],
+   "improve": [
+    "El score no participa del peso económico",
+    "Se invoca dos veces por elemento con queries distintas",
+    "Sin reintento local ni guard universal de STOP"
+   ],
+   "evidence": [
+    "HistoricalTechnicalPriceEstimator.cs:59-75",
+    "app/services/similarity_evaluator.py",
+    "docs/similarity.md"
+   ],
+   "affected": [
+    "empresa"
+   ]
+  },
+  {
+   "id": "N09",
+   "stage": "comercial",
+   "order": 5,
+   "title": "Cálculo del rango",
+   "summary": "Convierte los comparables en mínimo, esperado y máximo del proyecto.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Matemática explícita y trazable",
+    "Cuantiles ponderados 25/50/75",
+    "Agregación por raíz de suma de cuadrados",
+    "Sin comparables devuelve nulo, no cero"
+   ],
+   "improve": [
+    "El promedio del requisito es mediana en el código",
+    "La confianza es heurística, no calibración estadística"
+   ],
+   "evidence": [
+    "Application/HistoricalPricing/HistoricalTechnicalPriceEstimator.cs:121-274",
+    "PriceRequirementTechnicalProposalService.cs:1097-1152"
+   ],
+   "affected": [
+    "comercial"
+   ]
+  },
+  {
+   "id": "N10a",
+   "stage": "comercial",
+   "order": 8,
+   "title": "Contrato de salida",
+   "summary": "El resultado que ve el comercial tiene una forma estable y auditable.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "contextToken, matcherVersion y priceValidityReason",
+    "Procedencia JSON v2",
+    "NO_ESTIMATE conserva el importe anterior con su procedencia"
+   ],
+   "improve": [
+    "Conviven versiones v1 legacy y v2 sin política explícita de retiro"
+   ],
+   "evidence": [
+    "Application/PreQuotes/PriceRequirementTechnicalProposal/ExperiencePricing.cs",
+    "docs/experience-pricing.md"
+   ],
+   "affected": [
+    "comercial",
+    "empresa"
+   ]
+  },
+  {
+   "id": "N10b",
+   "stage": "extraccion",
+   "order": 5,
+   "title": "Validación estricta de la salida de IA",
+   "summary": "El sistema debería garantizar la forma de lo que devuelve la IA.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Pydantic en todas las rutas",
+    "Schema y max_output_tokens en localized_v1"
+   ],
+   "improve": [
+    "La ruta legacy solo usa response_mime_type",
+    "Sin reintento con el error de validación",
+    "Sin verificación de plausibilidad económica"
+   ],
+   "evidence": [
+    "app/providers/gemini_extraction.py",
+    "app/providers/gemini_localization_v1.py:320"
+   ],
+   "affected": [
+    "empresa"
+   ]
+  },
+  {
+   "id": "N11",
+   "stage": "comercial",
+   "order": 1,
+   "title": "Vista del comercial sobre lo registrado por el cliente",
+   "summary": "El comercial ve exactamente lo que el cliente respondió, sin interpretaciones.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "37 IDs versionados en 7 secciones",
+    "Estados de disponibilidad explícitos",
+    "Excluye nombre y WhatsApp",
+    "Lectura pura sin SaveChanges"
+   ],
+   "improve": [
+    "El schema debe actualizarse a mano cuando evolucione el contrato público"
+   ],
+   "evidence": [
+    "Application/Projects/GetProjectDiagnosis/ProjectDiagnosisSchema.cs",
+    "Api/Controllers/ProjectDiagnosisController.cs:11-16"
+   ],
+   "affected": [
+    "comercial",
+    "cliente"
+   ]
+  },
+  {
+   "id": "N12a",
+   "stage": "comercial",
+   "order": 3,
+   "title": "Captura de prioridades por ítem",
+   "summary": "El comercial ajusta prioridades de confort, seguridad y protección por elemento.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Sugerido, guardado y confirmado son estados distintos",
+    "La carga pertenece a la request, no al componente"
+   ],
+   "improve": [
+    "Exige borrador guardado y confirmación para estimar: costoso con muchos ítems"
+   ],
+   "evidence": [
+    "Application/PreQuotes/RequirementExperience/*",
+    "docs/experience-item-preferences.md"
+   ],
+   "affected": [
+    "comercial"
+   ]
+  },
+  {
+   "id": "N12b",
+   "stage": "comercial",
+   "order": 2,
+   "title": "Precarga de prioridades desde la landing",
+   "summary": "Lo que el cliente contó en la landing llega precargado al comercial.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Deriva prioridades desde el diagnóstico público",
+    "Un borrador guardado prevalece siempre",
+    "Sin tabla ni migración nueva"
+   ],
+   "improve": [
+    "Solo traduce 5 beneficios",
+    "Acabados y respuestas contextuales son informativos"
+   ],
+   "evidence": [
+    "Application/PreQuotes/RequirementExperience/RequirementExperiencePreferences.cs",
+    "docs/experience-item-preferences.md"
+   ],
+   "affected": [
+    "comercial",
+    "cliente"
+   ]
+  },
+  {
+   "id": "N13",
+   "stage": "comercial",
+   "order": 4,
+   "title": "Reglas de prioridad a sistema y vidrio",
+   "summary": "Las preferencias del cliente influyen en qué producto se propone.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Explicable por reglas",
+    "El histórico suma como prior acotado, no como decisión",
+    "La selección final es explícita"
+   ],
+   "improve": [
+    "La cadena preferencia-producto-precio depende de confirmación y de un borrador completo"
+   ],
+   "evidence": [
+    "Application/Common/Abstractions/PreQuotes/ISgTechnicalSelector.cs",
+    "RequirementExperienceLevel1Resolver.cs",
+    "RequirementExperienceLevel2Resolver.cs"
+   ],
+   "affected": [
+    "comercial"
+   ]
+  },
+  {
+   "id": "N14",
+   "stage": "comercial",
+   "order": 6,
+   "title": "Recálculo iterativo del rango",
+   "summary": "El comercial cambia algo y vuelve a calcular sin perder el control de qué cambió.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Token de contexto y expectedEstimateId",
+    "INITIAL rechaza repetir el mismo contexto",
+    "409 ante cambio de contexto",
+    "Cubre A-B-A"
+   ],
+   "improve": [
+    "Cálculo por ítem con coste alto",
+    "Sin estimación incremental"
+   ],
+   "evidence": [
+    "ExperiencePricing.cs:104-119",
+    "Api/Controllers/ExperiencePricingController.cs:12-16"
+   ],
+   "affected": [
+    "comercial"
+   ]
+  },
+  {
+   "id": "N15",
+   "stage": "comercial",
+   "order": 7,
+   "title": "Creación manual de clientes y proyectos",
+   "summary": "El comercial puede operar sin depender de la landing.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Mismo modelo de ownership que el resto",
+    "Admin no es bypass"
+   ],
+   "improve": [],
+   "evidence": [
+    "Application/Clients/*",
+    "Application/Projects/*"
+   ],
+   "affected": [
+    "comercial"
+   ]
+  },
+  {
+   "id": "N16",
+   "stage": "plataforma",
+   "order": 1,
+   "title": "Manejo de errores y reintentos",
+   "summary": "Cuando algo falla, el sistema debería poder recuperarse solo.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Estados durables con lease y fencing",
+    "Publicación con revalidación",
+    "No reintentar evita duplicar efectos externos"
+   ],
+   "improve": [
+    "Sin reintento automático",
+    "Sin reconciliación de jobs Running sin supervisor",
+    "Commit incierto requiere lectura manual"
+   ],
+   "evidence": [
+    "RequirementProcessingJob.cs:3",
+    "ExperienceExecutionHost.cs:115-121"
+   ],
+   "affected": [
+    "equipo_tecnico",
+    "comercial"
+   ]
+  },
+  {
+   "id": "N17",
+   "stage": "plataforma",
+   "order": 2,
+   "title": "Observabilidad",
+   "summary": "Debe poder responderse qué pasó, cuánto tardó y cuánto costó.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Correlación entre backend y AI2",
+    "Etapas, conteos y tiempos de similitud",
+    "Distingue candidatos enviados, evaluados y usados"
+   ],
+   "improve": [
+    "Sin métricas exportadas ni trazas distribuidas",
+    "Sin agregación de costo por llamada"
+   ],
+   "evidence": [
+    "app/core/request_logging.py",
+    "app/core/similarity_logging.py",
+    "ExperienceExecutionHost.cs:90-121"
+   ],
+   "affected": [
+    "equipo_tecnico",
+    "empresa"
+   ]
+  },
+  {
+   "id": "N18",
+   "stage": "plataforma",
+   "order": 3,
+   "title": "Despliegue, configuración y secretos",
+   "summary": "El sistema debe poder desplegarse sin editar código.",
+   "implemented": "TRUE",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Options y variables de entorno",
+    "Flags explícitos",
+    "Migraciones versionadas",
+    "Secretos fuera del repositorio"
+   ],
+   "improve": [
+    "Sin integración con gestor de secretos",
+    "Sin verificación de coherencia entre flags relacionados"
+   ],
+   "evidence": [
+    "Api/appsettings.json",
+    "ExperienceExecutionHostOptions"
+   ],
+   "affected": [
+    "equipo_tecnico"
+   ]
+  },
+  {
+   "id": "N19",
+   "stage": "plataforma",
+   "order": 4,
+   "title": "Seguridad y protección de datos",
+   "summary": "Los datos del cliente no deben filtrarse ni usarse fuera de su alcance.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Autorización en el dominio, no solo en el borde",
+    "Admin no es bypass general",
+    "El intake no acepta IDs de propietario del visitante",
+    "El diagnóstico excluye nombre y WhatsApp"
+   ],
+   "improve": [
+    "AI2 no tiene autenticación",
+    "Sin rate limit en intake ni en AI2",
+    "Sin escaneo de archivos",
+    "Sin política de retención declarada"
+   ],
+   "evidence": [
+    "Api/Controllers/PublicExperienceSubmissionsController.cs:20-21",
+    "docs/project-diagnosis.md",
+    "app/main.py"
+   ],
+   "affected": [
+    "cliente",
+    "empresa"
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from": "N01",
+   "to": "N02",
+   "type": "alimenta"
+  },
+  {
+   "from": "N02",
+   "to": "N03",
+   "type": "alimenta"
+  },
+  {
+   "from": "N03",
+   "to": "N04",
+   "type": "alimenta"
+  },
+  {
+   "from": "N04",
+   "to": "N05",
+   "type": "alimenta"
+  },
+  {
+   "from": "N05",
+   "to": "N06",
+   "type": "alimenta"
+  },
+  {
+   "from": "N06",
+   "to": "N13",
+   "type": "alimenta"
+  },
+  {
+   "from": "N07a",
+   "to": "N08",
+   "type": "alimenta"
+  },
+  {
+   "from": "N08",
+   "to": "N09",
+   "type": "alimenta"
+  },
+  {
+   "from": "N08",
+   "to": "N13",
+   "type": "acopla_datos",
+   "note": "la evidencia histórica inclina la elección de sistema"
+  },
+  {
+   "from": "N13",
+   "to": "N14",
+   "type": "alimenta"
+  },
+  {
+   "from": "N09",
+   "to": "N14",
+   "type": "alimenta"
+  },
+  {
+   "from": "N14",
+   "to": "N10a",
+   "type": "alimenta"
+  },
+  {
+   "from": "N04",
+   "to": "N11",
+   "type": "alimenta"
+  },
+  {
+   "from": "N11",
+   "to": "N12b",
+   "type": "alimenta"
+  },
+  {
+   "from": "N12b",
+   "to": "N12a",
+   "type": "alimenta"
+  },
+  {
+   "from": "N12a",
+   "to": "N13",
+   "type": "alimenta"
+  },
+  {
+   "from": "N05",
+   "to": "N09",
+   "type": "depende_de"
+  },
+  {
+   "from": "N13",
+   "to": "N09",
+   "type": "depende_de",
+   "note": "sin selección persistida no hay estimación"
+  },
+  {
+   "from": "N09",
+   "to": "N10a",
+   "type": "falla_en_cascada",
+   "note": "un contexto inválido invalida el precio publicado"
+  }
+ ],
+ "breaks": [
+  {
+   "from": "N07a",
+   "to": "N09",
+   "reason": "Sin fecha de cotización no hay ventana de vigencia ni ajuste por inflación"
+  }
+ ],
+ "axes": [
+  {
+   "id": "E1",
+   "name": "Confiabilidad"
+  },
+  {
+   "id": "E2",
+   "name": "Rendimiento y concurrencia"
+  },
+  {
+   "id": "E3",
+   "name": "Costo y reutilización"
+  },
+  {
+   "id": "E4",
+   "name": "Calidad de datos"
+  },
+  {
+   "id": "E5",
+   "name": "Calidad del resultado de IA"
+  },
+  {
+   "id": "E6",
+   "name": "Observabilidad"
+  },
+  {
+   "id": "E7",
+   "name": "Seguridad y privacidad"
+  },
+  {
+   "id": "E8",
+   "name": "Pruebas"
+  },
+  {
+   "id": "E9",
+   "name": "Mantenibilidad"
+  },
+  {
+   "id": "E10",
+   "name": "Experiencia de uso"
+  }
+ ],
+ "matrix": {
+  "N01": [
+   null,
+   3,
+   3,
+   null,
+   null,
+   1,
+   2,
+   1,
+   3,
+   3
+  ],
+  "N02": [
+   1,
+   3,
+   3,
+   2,
+   null,
+   1,
+   2,
+   2,
+   3,
+   3
+  ],
+  "N03": [
+   2,
+   2,
+   2,
+   2,
+   null,
+   1,
+   1,
+   2,
+   2,
+   2
+  ],
+  "N04": [
+   3,
+   2,
+   2,
+   2,
+   null,
+   2,
+   1,
+   3,
+   2,
+   2
+  ],
+  "N05": [
+   2,
+   2,
+   2,
+   null,
+   null,
+   2,
+   2,
+   3,
+   2,
+   3
+  ],
+  "N06": [
+   1,
+   1,
+   1,
+   2,
+   2,
+   2,
+   1,
+   2,
+   2,
+   1
+  ],
+  "N07a": [
+   1,
+   1,
+   1,
+   1,
+   null,
+   1,
+   2,
+   2,
+   2,
+   null
+  ],
+  "N07b": [
+   0,
+   null,
+   null,
+   0,
+   null,
+   null,
+   null,
+   1,
+   1,
+   1
+  ],
+  "N08": [
+   2,
+   2,
+   1,
+   2,
+   2,
+   3,
+   2,
+   3,
+   2,
+   2
+  ],
+  "N09": [
+   3,
+   2,
+   1,
+   2,
+   2,
+   2,
+   null,
+   3,
+   2,
+   2
+  ],
+  "N10a": [
+   3,
+   null,
+   null,
+   3,
+   null,
+   2,
+   2,
+   3,
+   2,
+   2
+  ],
+  "N10b": [
+   1,
+   null,
+   null,
+   2,
+   1,
+   1,
+   null,
+   1,
+   2,
+   null
+  ],
+  "N11": [
+   3,
+   3,
+   3,
+   3,
+   null,
+   2,
+   3,
+   3,
+   3,
+   3
+  ],
+  "N12a": [
+   2,
+   2,
+   2,
+   2,
+   null,
+   2,
+   2,
+   2,
+   2,
+   2
+  ],
+  "N12b": [
+   2,
+   3,
+   3,
+   3,
+   null,
+   1,
+   2,
+   3,
+   3,
+   3
+  ],
+  "N13": [
+   3,
+   2,
+   2,
+   2,
+   null,
+   3,
+   null,
+   3,
+   2,
+   2
+  ],
+  "N14": [
+   3,
+   2,
+   1,
+   3,
+   null,
+   2,
+   3,
+   3,
+   2,
+   3
+  ],
+  "N15": [
+   3,
+   3,
+   3,
+   3,
+   null,
+   2,
+   3,
+   2,
+   3,
+   3
+  ],
+  "N16": [
+   2,
+   2,
+   2,
+   null,
+   null,
+   2,
+   2,
+   3,
+   2,
+   2
+  ],
+  "N17": [
+   1,
+   null,
+   1,
+   null,
+   null,
+   2,
+   null,
+   1,
+   2,
+   null
+  ],
+  "N18": [
+   2,
+   null,
+   null,
+   null,
+   null,
+   1,
+   2,
+   1,
+   2,
+   null
+  ],
+  "N19": [
+   1,
+   1,
+   1,
+   1,
+   null,
+   1,
+   2,
+   1,
+   2,
+   null
+  ]
+ },
+ "hypotheses": [
+  {
+   "id": "H1",
+   "statement": "No hay caché: cada pre-cotización repite todo el trabajo.",
+   "verdict": "partially_confirmed",
+   "nodes": [
+    "N06",
+    "N08",
+    "N09"
+   ],
+   "evidence": "Sin IMemoryCache ni Redis ni caché por hash; sí memoización por contextToken y priceVersion."
+  },
+  {
+   "id": "H2",
+   "statement": "No hay reintentos: si una llamada falla, el proceso completo falla.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N05",
+    "N06",
+    "N16"
+   ],
+   "evidence": "Sin Polly; el host registra no retry; la recuperación es por job durable."
+  },
+  {
+   "id": "H3",
+   "statement": "El procesamiento es secuencial.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N05",
+    "N06"
+   ],
+   "evidence": "Enrichment en lotes secuenciales; el host recorre candidatos con await en serie."
+  },
+  {
+   "id": "H4",
+   "statement": "La similitud LLM es el mecanismo central y no hay alternativa más barata.",
+   "verdict": "refuted",
+   "nodes": [
+    "N08",
+    "N09"
+   ],
+   "evidence": "El peso económico sale del score técnico determinista; la similitud influye en la elección de sistema y la confianza."
+  },
+  {
+   "id": "H5",
+   "statement": "Las prioridades cambian el sistema, el vidrio y el precio.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N12a",
+    "N12b",
+    "N13",
+    "N14"
+   ],
+   "evidence": "Level1/Level2 producen la selección que consume el pricing, con confirmación explícita y borrador guardado."
+  },
+  {
+   "id": "H6",
+   "statement": "Existe más de una lógica de precio.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N09",
+    "N10a"
+   ],
+   "evidence": "Conviven PREQUOTE_V1 determinista y comparables históricos."
+  },
+  {
+   "id": "H7",
+   "statement": "Sin comparables válidos no hay rango.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N08",
+    "N09",
+    "N10a"
+   ],
+   "evidence": "Devuelve NO_ESTIMATE con importes nulos y conserva el importe anterior con su procedencia."
+  },
+  {
+   "id": "H8",
+   "statement": "La ventana de 3 meses es fija y no hay ajuste por fecha o inflación.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N07a",
+    "N07b",
+    "N09"
+   ],
+   "evidence": "No existe campo de fecha en el modelo histórico ni ventana temporal."
+  },
+  {
+   "id": "H9",
+   "statement": "El control de vigencia impide publicar un precio de un contexto viejo.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N14",
+    "N10a"
+   ],
+   "evidence": "contextToken, HISTORICAL_MATCHER_V1, 409 ante cambio y revalidación en publicación."
+  },
+  {
+   "id": "H10",
+   "statement": "El sistema está diseñado para arrancar apagado y activarse por decisión operativa.",
+   "verdict": "confirmed",
+   "nodes": [
+    "N05",
+    "N18"
+   ],
+   "evidence": "EmitAutomaticExecution y ExperienceExecutionHost.Enabled en false por defecto."
+  }
+ ],
+ "findings": [
+  {
+   "id": "F01",
+   "severity": "P0",
+   "title": "No existe la ventana de vigencia del histórico",
+   "description": "Sin fecha de cotización no hay política posible; el rango no tiene control temporal.",
+   "nodes": [
+    "N07b",
+    "N09"
+   ],
+   "effort": "L"
+  },
+  {
+   "id": "F02",
+   "severity": "P0",
+   "title": "El flujo automático está apagado por defecto",
+   "description": "Emisión y host son flags independientes en false. Es una decisión operativa, pero el recorrido end-to-end no se activa solo.",
+   "nodes": [
+    "N05",
+    "N18"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F03",
+   "severity": "P0",
+   "title": "No hay recuperación automática de jobs detenidos",
+   "description": "Un job Running sin supervisor requiere reconciliación manual.",
+   "nodes": [
+    "N16"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F04",
+   "severity": "P1",
+   "title": "La similitud de IA no pondera el precio y se paga dos veces",
+   "description": "El score semántico se calcula, se muestra y no entra en el peso; la misma decisión se evalúa en dos pasadas.",
+   "nodes": [
+    "N08",
+    "N09"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F05",
+   "severity": "P1",
+   "title": "El corpus no tiene fecha ni moneda validada",
+   "description": "Un precio en USD entraría como COP y una cotización de 2022 pesa igual que una de 2026.",
+   "nodes": [
+    "N07a",
+    "N07b"
+   ],
+   "effort": "L"
+  },
+  {
+   "id": "F06",
+   "severity": "P1",
+   "title": "Dos motores de precio conviviendo",
+   "description": "PREQUOTE_V1 y comparables históricos pueden dar números distintos para el mismo proyecto.",
+   "nodes": [
+    "N09",
+    "N10a"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F07",
+   "severity": "P1",
+   "title": "Sin evaluación de calidad de extracción",
+   "description": "No hay gold set; no se puede afirmar mejora o retroceso entre versiones.",
+   "nodes": [
+    "N06",
+    "N10b"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F08",
+   "severity": "P1",
+   "title": "Sin métricas ni costo agregado por llamada",
+   "description": "El gasto se estima leyendo logs.",
+   "nodes": [
+    "N17"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F09",
+   "severity": "P1",
+   "title": "CandidateTopK no se usa",
+   "description": "Los mappers pasan 10 fijo; la configuración de 20 es inerte.",
+   "nodes": [
+    "N07a"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F10",
+   "severity": "P2",
+   "title": "Sin caché de extracción por hash de archivo",
+   "description": "El mismo plano subido dos veces se procesa desde cero.",
+   "nodes": [
+    "N06"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F11",
+   "severity": "P2",
+   "title": "Host secuencial",
+   "description": "Sin paralelismo acotado por lote.",
+   "nodes": [
+    "N05",
+    "N16"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F12",
+   "severity": "P2",
+   "title": "Sin rate limit en intake ni en AI2",
+   "description": "No hay techo de gasto por request ni por usuario.",
+   "nodes": [
+    "N04",
+    "N19"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F13",
+   "severity": "P2",
+   "title": "Sin escaneo de archivos subidos",
+   "description": "No se valida firma binaria ni malware.",
+   "nodes": [
+    "N03",
+    "N19"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F14",
+   "severity": "P2",
+   "title": "Sin guardado parcial del cuestionario público",
+   "description": "Si el cliente abandona, pierde lo respondido.",
+   "nodes": [
+    "N02"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F15",
+   "severity": "P2",
+   "title": "Lint del frontend con tres errores preexistentes",
+   "description": "Declarado por el equipo; no se declara lint global aprobado.",
+   "nodes": [
+    "N11"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F16",
+   "severity": "P2",
+   "title": "Documentación desfasada respecto del código",
+   "description": "public-experience-intake.md dice que las respuestas no se copian a preferencias; RequirementExperiencePreferences.cs las traduce a prioridades iniciales.",
+   "nodes": [
+    "N02",
+    "N11",
+    "N12b"
+   ],
+   "effort": "S"
+  }
+ ],
+ "highlights": {
+  "top": [
+   "F01",
+   "F04",
+   "F02",
+   "H8",
+   "F06"
+  ],
+  "strengths": [
+   "Idempotencia del intake con fingerprint canónico",
+   "Jobs durables con lease, fencing y publicación revalidada",
+   "Control de vigencia del precio por contexto y versión de matcher",
+   "Diagnóstico del cliente con 37 IDs versionados y exclusión de datos personales",
+   "Motor de rango explícito: cuantiles ponderados, proyección por área y agregación por raíz de suma de cuadrados",
+   "Documentación propia del equipo: 41 documentos y 5 ADR"
+  ]
+ },
+ "decisions_needed": [
+  "Activar o no la emisión automática y el host de ejecución",
+  "Definir la política de vigencia del histórico: ventana, inflación o ambas",
+  "Decidir el rol de la IA en el precio: ponderar comparables o dejarla como evidencia",
+  "Elegir un único motor de precio",
+  "Definir dueño y control de acceso del corpus histórico"
+ ],
+ "render_hints": {
+  "layout": "left_to_right",
+  "stage_order": [
+   "captura",
+   "extraccion",
+   "comercial",
+   "plataforma"
+  ],
+  "tone_colors": {
+   "ok": "#1f6f3f",
+   "partial": "#8a6d1f",
+   "fail": "#8a1f1f"
+  },
+  "tone_labels": {
+   "ok": "Implementado y confiable",
+   "partial": "Funciona con bordes",
+   "fail": "No implementado"
+  },
+  "badge_labels": {
+   "TRUE": "Implementado",
+   "PARTIAL": "Parcial",
+   "FALSE": "No implementado"
+  },
+  "duration_hint_seconds": {
+   "per_node": 6,
+   "per_stage_intro": 4,
+   "total_flow": 15
+  },
+  "emphasis": [
+   "N07b",
+   "N08",
+   "N14",
+   "N09"
+  ],
+  "tone_rule": "ok = implementado TRUE y reliability 2; partial = implementado PARTIAL o (TRUE y reliability 1); fail = implementado FALSE"
+ }
+}

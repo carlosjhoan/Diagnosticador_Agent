@@ -1,0 +1,48 @@
+{
+  "question": "cuanto cuesta un kilo de pan",
+  "capturedAt": "2026-11-11T20:05:02.696Z",
+  "ms": 1726,
+  "response": {
+    "view": "out_of_scope",
+    "reason": "out_of_scope",
+    "title": "Fuera del alcance",
+    "story": "Eso no se responde con los diagnósticos de estos tres proyectos.",
+    "question": "cuanto cuesta un kilo de pan",
+    "entendido": "Pregunta cuánto cuesta un kilo de pan.",
+    "intenciones": [
+      {
+        "texto": "¿Cuánto cuesta un kilo de pan?",
+        "proyecto": "ninguno",
+        "tipo": "otro",
+        "score": 0.02,
+        "inScope": false
+      }
+    ],
+    "scope": {
+      "projects": [
+        {
+          "id": "landing",
+          "name": "Landing",
+          "role": "Puerta de entrada pública y captura del lead"
+        },
+        {
+          "id": "comercial",
+          "name": "Comercial",
+          "role": "Pre-cotización agéntica en la reunión de onboarding"
+        },
+        {
+          "id": "gerencial",
+          "name": "Gerencial Brain",
+          "role": "Sistema de registro y capa de decisión gerencial"
+        }
+      ],
+      "examples": [
+        "¿Qué riesgos corro en el Comercial?",
+        "¿Qué falta para robustecer el Gerencial Brain?",
+        "¿Cómo se conectan la Landing y el Comercial?",
+        "¿Qué hay hoy en la Landing?"
+      ]
+    },
+    "fidelity_warning": true
+  }
+}

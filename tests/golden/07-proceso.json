@@ -1,0 +1,45 @@
+{
+  "question": "mostrame el proceso de cotización",
+  "capturedAt": "2026-11-11T20:05:00.950Z",
+  "ms": 5738,
+  "response": {
+    "view": "flow",
+    "title": "Proceso de cotización",
+    "story": "El lead debería entrar por la Landing, pre-cotizarse en el Comercial y terminar en Gerencial, pero la costura de envío está rota: la URL del Cotizador está vacía y el lead no entra al sistema. En Comercial el request HTTP es el job, sin cola ni retries, y el corpus de precios en producción está vacío, así que el proceso no aguanta tres comerciales simultáneos ni un 503 de Gemini. La cotización aprobada no se convierte sola en proyecto ni en tareas: el handoff a Gerencial es manual y la identidad de usuario está fragmentada entre los tres sistemas.",
+    "projectId": null,
+    "focus": [
+      "S1",
+      "S2",
+      "S4",
+      "C-P0-3",
+      "C-P0-2",
+      "C-P0-5",
+      "C-P1-6",
+      "S6"
+    ],
+    "intents": [
+      {
+        "texto": "Mostrar el proceso de cotización.",
+        "proyecto": "comercial",
+        "tipo": "otro",
+        "score": 0.89,
+        "inScope": true
+      }
+    ],
+    "lectura": "Entendí que querés ver el proceso de cotización.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.86,
+        "responde": 0.84,
+        "severidad": 0.75
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 3680,
+        "output_tokens": 57
+      }
+    }
+  }
+}

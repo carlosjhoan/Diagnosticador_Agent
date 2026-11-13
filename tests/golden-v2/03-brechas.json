@@ -1,0 +1,120 @@
+{
+  "question": "¿Qué falta para robustecer el Gerencial Brain?",
+  "capturedAt": "2026-11-12T03:08:00.128Z",
+  "ms": 12492,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Qué falta en Gerencial Brain",
+    "story": "",
+    "projectId": "gerencial",
+    "focus": [
+      "G-R1",
+      "G-R2",
+      "G-R3",
+      "G-R4",
+      "G-R5",
+      "G-R6",
+      "G-R7",
+      "G-R8"
+    ],
+    "layout": [
+      {
+        "type": "list",
+        "props": {
+          "items": [
+            {
+              "title": "Sin RBAC",
+              "text": "No hay tablas de usuarios, roles ni permisos; tres policies comparan contra un subject en variables de entorno.",
+              "tag": "G-R1",
+              "tone": "critical",
+              "evidence": "Authentication:ManagementSubject, CommercialHeadSubject, BudgetsAssigneeSubject"
+            },
+            {
+              "title": "Inventario inexistente",
+              "text": "Cero entidades, endpoints o tools en Backend, Front e Intelligence.",
+              "tag": "G-R2",
+              "tone": "critical",
+              "evidence": "búsqueda de inventory/inventario en Backend, Front, Intelligence"
+            },
+            {
+              "title": "Personal inexistente",
+              "text": "Sin entidad de empleados, asistencia ni áreas como entidad; solo un enum OperationalArea.",
+              "tag": "G-R3",
+              "tone": "critical",
+              "evidence": "Dominio, sección 8"
+            }
+          ],
+          "ordered": false
+        }
+      },
+      {
+        "type": "list",
+        "props": {
+          "items": [
+            {
+              "title": "Agente read-only",
+              "text": "No crea tareas, no mueve fechas, no genera reportes ni documenta.",
+              "tag": "G-R4",
+              "tone": "high",
+              "evidence": "Intelligence, sección 4.3"
+            },
+            {
+              "title": "Token en sessionStorage",
+              "text": "El ID token vive en sessionStorage y no hay middleware.ts: robable por XSS y sin protección server-side.",
+              "tag": "G-R5",
+              "tone": "high",
+              "evidence": "auth client, ausencia de middleware.ts"
+            },
+            {
+              "title": "Sin CI",
+              "text": "Ninguno de los tres servicios tiene pipeline; la cobertura de ~150 tests es teórica.",
+              "tag": "G-R6",
+              "tone": "high",
+              "evidence": "ausencia de .github/workflows"
+            },
+            {
+              "title": "Sin observabilidad cruzada",
+              "text": "No se propaga requestId: ante una respuesta incorrecta no se sabe si falló front, proxy, Python o backend.",
+              "tag": "G-R7",
+              "tone": "medium",
+              "evidence": "sin requestId propagado entre servicios"
+            },
+            {
+              "title": "UI invierte permisos",
+              "text": "showCreation = isManagement === false: gerencia no puede crear clientes ni proyectos.",
+              "tag": "G-R8",
+              "tone": "medium",
+              "evidence": "sección 5, puntos de atención"
+            }
+          ],
+          "ordered": false
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "¿Qué falta para robustecer el Gerencial Brain?",
+        "proyecto": "gerencial",
+        "tipo": "brecha",
+        "score": 0.97,
+        "inScope": true
+      }
+    ],
+    "lectura": "Preguntás qué falta para robustecer el Gerencial Brain.",
+    "verification": {
+      "status": "rejected",
+      "scores": {
+        "respaldada": 0.88,
+        "responde": 0.96,
+        "severidad": 0.48
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4536,
+        "output_tokens": 57
+      }
+    }
+  }
+}

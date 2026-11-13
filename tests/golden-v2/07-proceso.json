@@ -1,0 +1,98 @@
+{
+  "question": "mostrame el proceso de cotización",
+  "capturedAt": "2026-11-12T03:08:31.564Z",
+  "ms": 6650,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Proceso de pre-cotización agéntica",
+    "story": "Ocho pasos entre la reunión y el rango: alta del cliente, upload, procesamiento, extracción con Gemini, propuesta técnica, pricing histórico, rango y Excel FpPro. El request HTTP es el job: no hay cola, ni reintentos, ni fuente de precio gobernada. El flujo se corta en el paso 3 si el comercial refresca la pestaña, y no hay forma de retomarlo.",
+    "projectId": "comercial",
+    "focus": [
+      "C-P0-1",
+      "C-P0-2",
+      "C-P0-5"
+    ],
+    "layout": [
+      {
+        "type": "stepper",
+        "props": {
+          "steps": [
+            {
+              "label": "Alta del cliente",
+              "status": "ok",
+              "detail": "Cliente → Proyecto → Pre-cotización. Solo el creador puede procesar."
+            },
+            {
+              "label": "Upload del requerimiento",
+              "status": "run",
+              "detail": "Hasta 10 archivos · 100 MiB · se persisten en disco local"
+            },
+            {
+              "label": "POST /process",
+              "status": "fail",
+              "detail": "Síncrono y bloqueante, timeout de 900 s · C-P0-1"
+            },
+            {
+              "label": "Extracción con Gemini",
+              "status": "fail",
+              "detail": "Discovery + scope + enrichment secuencial: 10 a 15 min · C-P0-2"
+            },
+            {
+              "label": "Propuesta técnica",
+              "status": "ok",
+              "detail": "Selección determinista por reglas, sin LLM"
+            },
+            {
+              "label": "Pricing histórico",
+              "status": "fail",
+              "detail": "Comparables secuenciales contra el corpus · C-P0-5"
+            },
+            {
+              "label": "Rango y confianza",
+              "status": "blocked",
+              "detail": "Cuantiles ponderados mínimo / esperado / máximo"
+            },
+            {
+              "label": "Excel FpPro",
+              "status": "blocked",
+              "detail": "Entregable manual, fuera de la reunión"
+            }
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "warn",
+          "title": "Dónde se corta",
+          "text": "El flujo se corta en el paso 3 si el comercial refresca la pestaña, y no hay forma de retomarlo."
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "Mostrar el proceso de cotización.",
+        "proyecto": "comercial",
+        "tipo": "conexion",
+        "score": 0.94,
+        "inScope": true
+      }
+    ],
+    "lectura": "Pide ver el proceso de cotización.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.83,
+        "responde": 0.88,
+        "severidad": 0.81
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4352,
+        "output_tokens": 57
+      }
+    }
+  }
+}

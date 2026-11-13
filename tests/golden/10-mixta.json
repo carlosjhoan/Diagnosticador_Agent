@@ -1,0 +1,50 @@
+{
+  "question": "¿qué falta en el brain y cuánto sale una ventana de aluminio?",
+  "capturedAt": "2026-11-11T20:05:10.068Z",
+  "ms": 7367,
+  "response": {
+    "view": "scope",
+    "title": "Qué falta en el Brain",
+    "story": "",
+    "projectId": "gerencial",
+    "focus": [
+      "G-R2",
+      "G-R3",
+      "G-R1",
+      "G-R4",
+      "G-R6",
+      "G-R8"
+    ],
+    "intents": [
+      {
+        "texto": "¿Qué falta en el brain?",
+        "proyecto": "gerencial",
+        "tipo": "brecha",
+        "score": 0.97,
+        "inScope": true
+      },
+      {
+        "texto": "¿Cuál es la cotización de una ventana de aluminio?",
+        "proyecto": "comercial",
+        "tipo": "otro",
+        "score": 0.05,
+        "inScope": false
+      }
+    ],
+    "lectura": "Pregunta qué falta en el brain y cuánto cuesta una ventana de aluminio.",
+    "verification": {
+      "status": "rejected",
+      "scores": {
+        "respaldada": 0.77,
+        "responde": 0.56,
+        "severidad": 0.68
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 3668,
+        "output_tokens": 57
+      }
+    }
+  }
+}

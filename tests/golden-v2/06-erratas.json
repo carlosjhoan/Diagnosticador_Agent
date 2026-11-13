@@ -1,0 +1,38 @@
+{
+  "question": "che q riesgos tengo en el comersial porfa",
+  "capturedAt": "2026-11-12T03:08:24.913Z",
+  "ms": 9627,
+  "response": {
+    "v": 2,
+    "view": "risks",
+    "title": "Riesgos del proyecto Comercial",
+    "story": "El Comercial concentra los riesgos más duros de los tres sistemas: el request HTTP es el job, así que un refresh en el paso 3 deja el requerimiento en Processing para siempre y sin limpieza. No hay retries ni circuit breaker frente a Gemini, no hay cola para tres comerciales simultáneos y el motor de pricing corre sobre un corpus que en producción está vacío. A eso se suma que AI2 escucha sin autenticación y que dos motores de precio pueden dar números distintos para el mismo ítem.",
+    "projectId": "comercial",
+    "focus": [],
+    "degraded": true,
+    "intents": [
+      {
+        "texto": "¿Qué riesgos tengo en el proyecto comercial?",
+        "proyecto": "comercial",
+        "tipo": "riesgo",
+        "score": 0.97,
+        "inScope": true
+      }
+    ],
+    "lectura": "Pregunta qué riesgos tenés en el proyecto comercial.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.83,
+        "responde": 0.87,
+        "severidad": 0.88
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4044,
+        "output_tokens": 57
+      }
+    }
+  }
+}

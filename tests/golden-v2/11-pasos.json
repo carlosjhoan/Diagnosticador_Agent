@@ -1,0 +1,100 @@
+{
+  "question": "mostrame el proceso de cotización paso a paso",
+  "capturedAt": "2026-11-12T03:08:50.720Z",
+  "ms": 8193,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Pre-cotización agéntica: los 8 pasos",
+    "story": "La pre-cotización corre en ocho pasos entre la reunión de onboarding y el rango final. El request HTTP es el job: no hay cola, ni reintentos, ni corpus de precios gobernado en producción. El flujo se corta en el paso 3 si el comercial refresca la pestaña, y no hay forma de retomarlo.",
+    "projectId": "comercial",
+    "focus": [
+      "C-P0-1",
+      "C-P0-2",
+      "C-P0-5",
+      "C-P0-3",
+      "C-P1-11"
+    ],
+    "layout": [
+      {
+        "type": "stepper",
+        "props": {
+          "steps": [
+            {
+              "label": "Alta del cliente",
+              "status": "ok",
+              "detail": "Cliente → Proyecto → Pre-cotización. Solo el creador puede procesar."
+            },
+            {
+              "label": "Upload del requerimiento",
+              "status": "run",
+              "detail": "Hasta 10 archivos · 100 MiB · se persisten en disco local"
+            },
+            {
+              "label": "POST /process",
+              "status": "fail",
+              "detail": "Síncrono y bloqueante, timeout de 900 s"
+            },
+            {
+              "label": "Extracción con Gemini",
+              "status": "fail",
+              "detail": "Discovery + scope + enrichment secuencial: 10 a 15 min"
+            },
+            {
+              "label": "Propuesta técnica",
+              "status": "ok",
+              "detail": "Selección determinista por reglas, sin LLM"
+            },
+            {
+              "label": "Pricing histórico",
+              "status": "fail",
+              "detail": "Comparables secuenciales contra el corpus"
+            },
+            {
+              "label": "Rango y confianza",
+              "status": "blocked",
+              "detail": "Cuantiles ponderados mínimo / esperado / máximo"
+            },
+            {
+              "label": "Excel FpPro",
+              "status": "blocked",
+              "detail": "Entregable manual, fuera de la reunión"
+            }
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "danger",
+          "title": "El corte está en el paso 3",
+          "text": "Si el comercial refresca la pestaña o cierra el requerimiento, queda en Processing para siempre y todo POST posterior devuelve 409: no hay job de limpieza. A eso se suman cero reintentos ante un 503 de Gemini y un corpus de precios vacío en producción que degrada en silencio."
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "Mostrar el proceso de cotización paso a paso.",
+        "proyecto": "comercial",
+        "tipo": "otro",
+        "score": 0.94,
+        "inScope": true
+      }
+    ],
+    "lectura": "Pide ver el proceso de cotización explicado paso a paso",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.87,
+        "responde": 0.89,
+        "severidad": 0.8
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4393,
+        "output_tokens": 57
+      }
+    }
+  }
+}

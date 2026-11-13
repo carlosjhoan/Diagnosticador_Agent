@@ -1,0 +1,150 @@
+{
+  "question": "hazme un diagrama del proceso de cotización",
+  "capturedAt": "2026-11-12T03:09:00.554Z",
+  "ms": 9833,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Proceso de pre-cotización",
+    "story": "La pre-cotización encadena ocho pasos entre la reunión y el rango, con el request HTTP como job: no hay cola ni reintentos. El flujo se corta en el POST /process si el comercial refresca la pestaña, y el pricing histórico degrada en silencio cuando el corpus está vacío. La extracción con Gemini corre secuencial y sin tolerancia a fallos.",
+    "projectId": "comercial",
+    "focus": [
+      "C-P0-1",
+      "C-P0-2",
+      "C-P0-5"
+    ],
+    "layout": [
+      {
+        "type": "flowanim",
+        "props": {
+          "nodes": [
+            {
+              "id": "n1",
+              "label": "Alta del cliente",
+              "kind": "human"
+            },
+            {
+              "id": "n2",
+              "label": "Upload del requerimiento",
+              "kind": "data"
+            },
+            {
+              "id": "n3",
+              "label": "POST /process",
+              "kind": "system"
+            },
+            {
+              "id": "n4",
+              "label": "Extracción con Gemini",
+              "kind": "ai"
+            },
+            {
+              "id": "n5",
+              "label": "Propuesta técnica",
+              "kind": "system"
+            },
+            {
+              "id": "n6",
+              "label": "Pricing histórico",
+              "kind": "data"
+            },
+            {
+              "id": "n7",
+              "label": "Rango y confianza",
+              "kind": "risk"
+            },
+            {
+              "id": "n8",
+              "label": "Excel FpPro",
+              "kind": "human"
+            }
+          ],
+          "edges": [
+            {
+              "from": "n1",
+              "to": "n2",
+              "label": "",
+              "status": "ok"
+            },
+            {
+              "from": "n2",
+              "to": "n3",
+              "label": "",
+              "status": "ok"
+            },
+            {
+              "from": "n3",
+              "to": "n4",
+              "label": "síncrono 900 s",
+              "status": "ok"
+            },
+            {
+              "from": "n4",
+              "to": "n5",
+              "label": "",
+              "status": "ok"
+            },
+            {
+              "from": "n5",
+              "to": "n6",
+              "label": "",
+              "status": "ok"
+            },
+            {
+              "from": "n6",
+              "to": "n7",
+              "label": "",
+              "status": "ok"
+            },
+            {
+              "from": "n7",
+              "to": "n8",
+              "label": "entregable manual",
+              "status": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "danger",
+          "title": "Punto de corte",
+          "text": "El flujo se corta en el paso 3 si el comercial refresca la pestaña, y no hay forma de retomarlo: todo POST posterior devuelve 409 y no hay job de limpieza. Un 503 de Gemini al minuto 9 pierde los 10 minutos de trabajo, sin retries ni circuit breaker."
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "warn",
+          "title": "Precio y salida",
+          "text": "El pricing histórico corre contra un corpus que en producción está vacío y degrada en silencio. El rango queda bloqueado y el Excel FpPro se arma a mano, fuera de la reunión."
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "Solicito un diagrama del proceso de cotización.",
+        "proyecto": "comercial",
+        "tipo": "otro",
+        "score": 0.93,
+        "inScope": true
+      }
+    ],
+    "lectura": "Pide un diagrama del proceso de cotización.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.76,
+        "responde": 0.67,
+        "severidad": 0.68
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4468,
+        "output_tokens": 57
+      }
+    }
+  }
+}

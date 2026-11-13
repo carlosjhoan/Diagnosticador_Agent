@@ -1,0 +1,39 @@
+{
+  "question": "cvncncggch",
+  "capturedAt": "2026-11-12T03:08:31.576Z",
+  "ms": 10,
+  "response": {
+    "view": "out_of_scope",
+    "reason": "garbage",
+    "title": "No es una consulta",
+    "story": "No pude interpretar eso como una pregunta. Probá escribiendo qué querés saber del diagnóstico.",
+    "question": "cvncncggch",
+    "entendido": "",
+    "intenciones": [],
+    "scope": {
+      "projects": [
+        {
+          "id": "landing",
+          "name": "Landing",
+          "role": "Puerta de entrada pública y captura del lead"
+        },
+        {
+          "id": "comercial",
+          "name": "Comercial",
+          "role": "Pre-cotización agéntica en la reunión de onboarding"
+        },
+        {
+          "id": "gerencial",
+          "name": "Gerencial Brain",
+          "role": "Sistema de registro y capa de decisión gerencial"
+        }
+      ],
+      "examples": [
+        "¿Qué riesgos corro en el Comercial?",
+        "¿Qué falta para robustecer el Gerencial Brain?",
+        "¿Cómo se conectan la Landing y el Comercial?",
+        "¿Qué hay hoy en la Landing?"
+      ]
+    }
+  }
+}

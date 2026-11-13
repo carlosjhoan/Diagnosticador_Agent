@@ -1,0 +1,66 @@
+{
+  "question": "Dame la evidencia del hallazgo C-P0-1",
+  "capturedAt": "2026-11-12T03:08:15.284Z",
+  "ms": 5528,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Evidencia de C-P0-1",
+    "story": "El hallazgo C-P0-1 es crítico y de tipo riesgo: un refresh o cierre de pestaña deja el requerimiento en Processing para siempre. Todo POST posterior devuelve 409 y no existe job de limpieza. La evidencia está en ProcessRequirementService.cs, líneas 361-368 y 122-126.",
+    "projectId": "comercial",
+    "focus": [
+      "C-P0-1"
+    ],
+    "layout": [
+      {
+        "type": "evidence",
+        "props": {
+          "rows": [
+            {
+              "id": "C-P0-1",
+              "ref": "ProcessRequirementService.cs:361-368",
+              "note": "Estado Processing sin salida: el requerimiento no se libera al refrescar o cerrar la pestaña."
+            },
+            {
+              "id": "C-P0-1",
+              "ref": "ProcessRequirementService.cs:122-126",
+              "note": "POST posterior devuelve 409; no hay job de limpieza que revierta el estado."
+            }
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "danger",
+          "title": "Impacto en el proceso",
+          "text": "El flujo de pre-cotización se corta en el paso 3 (POST /process) y no hay forma de retomarlo."
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "Proporciona la evidencia asociada al hallazgo C-P0-1.",
+        "proyecto": "ninguno",
+        "tipo": "evidencia",
+        "score": 0.98,
+        "inScope": true
+      }
+    ],
+    "lectura": "Entendí que pedís la evidencia del hallazgo C-P0-1.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.94,
+        "responde": 0.96,
+        "severidad": 0.98
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 4209,
+        "output_tokens": 57
+      }
+    }
+  }
+}

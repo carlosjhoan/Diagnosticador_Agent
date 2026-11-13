@@ -1,0 +1,1673 @@
+{
+ "meta": {
+  "title": "Diagnóstico avanzado — Proyecto Gerencial Steel & Glass",
+  "version": "1.0",
+  "date": "2026-11-12",
+  "purpose": "Fuente de datos estructurada para presentaciones y animaciones: etapas, recorrido, nodos, valoraciones y hallazgos.",
+  "language": "es",
+  "source_markdown": "Docs/Diagnosticos/DIAGNOSTICO_AVANZADO_GERENCIAL.md",
+  "baseline": [
+   {
+    "repo": "Backend/SnG-Control-Backend",
+    "branch": "feature/identity-areas-v1",
+    "commit": "de7958d",
+    "role": "dominio operativo, estados, anticipo, medidas, ingeniería, autorización"
+   },
+   {
+    "repo": "Front/SnG-Control-Frontend",
+    "branch": "feature/identity-areas-v1",
+    "commit": "4ad2fe4",
+    "role": "panel operativo por rol, workspaces de medidas e ingeniería, agente"
+   },
+   {
+    "repo": "Intelligence/SnG_Intelligence",
+    "branch": "feature/identity-areas-v1",
+    "commit": "dd8526c",
+    "role": "agente de consulta, voz, presentación y persistencia de conversación"
+   }
+  ],
+  "scoring_rules": {
+   "implemented": [
+    "TRUE",
+    "PARTIAL",
+    "FALSE"
+   ],
+   "reliability": [
+    0,
+    1,
+    2
+   ],
+   "quality": [
+    "solid",
+    "works_not_best",
+    "needs_work"
+   ],
+   "notes": [
+    "La configuración ausente (Client ID, subjects, API keys) no se evalúa como defecto.",
+    "No verificado en ejecución no resta: la evaluación es por lectura de código, coherencia de la lógica y suites automatizadas.",
+    "reliability 2 = lógica determinista o explícitamente condicionada, con validaciones y sin caminos silenciosos.",
+    "reliability 1 = funciona en el caso de éxito con bordes no cubiertos.",
+    "reliability 0 = sin garantía lógica o requisito no implementado.",
+    "quality separa 'funciona' de 'está bien resuelto': un nodo puede ser TRUE y reliability 2 con quality works_not_best."
+   ]
+  },
+  "verification": {
+   "backend_tests": {
+    "passed": 1188,
+    "failed": 0,
+    "skipped": 21,
+    "command": "dotnet test"
+   },
+   "intelligence_tests": {
+    "passed": 1246,
+    "skipped": 1,
+    "command": "pytest"
+   },
+   "frontend_tests": {
+    "passed": 612,
+    "files": 20,
+    "worker_errors": 56,
+    "command": "vitest run"
+   },
+   "frontend_gates": {
+    "lint": "ok",
+    "typecheck": "ok",
+    "build": "ok"
+   },
+   "migrations": {
+    "applied": 29,
+    "tables": 38
+   },
+   "note": "Los workers del frontend no arrancan por Node 20 con undici; el proyecto exige Node 24. No es defecto de la rama."
+  },
+  "branch_gap_warning": "Intelligence no recibe commits desde 2026-10-28 mientras backend y frontend recibieron 16 commits el 2026-11-12."
+ },
+ "metrics": {
+  "nodes_total": 23,
+  "implemented_true": 12,
+  "implemented_partial": 7,
+  "implemented_false": 4,
+  "reliability_2": 12,
+  "reliability_1": 7,
+  "reliability_0": 4,
+  "quality_solid": 11,
+  "quality_works_not_best": 6,
+  "quality_needs_work": 6,
+  "hypotheses": 10,
+  "findings_p0": 4,
+  "findings_p1": 6,
+  "findings_p2": 4
+ },
+ "stages": [
+  {
+   "id": "nucleo",
+   "order": 1,
+   "title": "Núcleo comercial",
+   "subtitle": "Del proyecto a la decisión del cliente",
+   "summary": "El proyecto nace, se cotiza, se presenta y el cliente decide. Aquí aparece por primera vez el sí o el no.",
+   "node_ids": [
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G20",
+    "G22"
+   ]
+  },
+  {
+   "id": "anticipo",
+   "order": 2,
+   "title": "Anticipo",
+   "subtitle": "El dinero habilita la obra",
+   "summary": "Se solicita, se carga y contabilidad verifica. La aprobación dispara automáticamente la toma de medidas.",
+   "node_ids": [
+    "G05",
+    "G06",
+    "G07"
+   ]
+  },
+  {
+   "id": "medidas",
+   "order": 3,
+   "title": "Medidas e ingeniería",
+   "subtitle": "Del sitio al despiece",
+   "summary": "Se mide en obra con croquis versionados, se levanta el acta y ingeniería despieza cada vano.",
+   "node_ids": [
+    "G08",
+    "G09"
+   ]
+  },
+  {
+   "id": "produccion",
+   "order": 4,
+   "title": "Producción y gerencia",
+   "subtitle": "Donde el flujo se corta",
+   "summary": "Planos de corte, distribución del trabajo, avance por área y dashboard. Solo el dashboard existe, y mide tareas.",
+   "node_ids": [
+    "G10",
+    "G11",
+    "G12",
+    "G13"
+   ]
+  },
+  {
+   "id": "consulta",
+   "order": 5,
+   "title": "Consulta agéntica",
+   "subtitle": "Preguntar por texto o por voz",
+   "summary": "El agente lee los datos existentes y responde con evidencia. No escribe ni genera documentos.",
+   "node_ids": [
+    "G18",
+    "G19"
+   ]
+  },
+  {
+   "id": "plataforma",
+   "order": 6,
+   "title": "Plataforma",
+   "subtitle": "Lo que sostiene todo lo demás",
+   "summary": "Roles, auditoría, seguridad, documentos y la relación con el Pre-cotizador.",
+   "node_ids": [
+    "G14",
+    "G15",
+    "G16",
+    "G17",
+    "G21",
+    "G23"
+   ]
+  }
+ ],
+ "flow": [
+  {
+   "order": 1,
+   "node_id": "G02",
+   "label": "Comercial envía el proyecto a presupuesto"
+  },
+  {
+   "order": 2,
+   "node_id": "G20",
+   "label": "Presupuesto cotiza sobre la planilla"
+  },
+  {
+   "order": 3,
+   "node_id": "G03",
+   "label": "Comercial presenta y el cliente decide"
+  },
+  {
+   "order": 4,
+   "node_id": "G22",
+   "label": "Si pide cambios, se recotiza"
+  },
+  {
+   "order": 5,
+   "node_id": "G04",
+   "label": "Si dice no, se registra la pérdida"
+  },
+  {
+   "order": 6,
+   "node_id": "G05",
+   "label": "Si dice sí, se solicita el anticipo"
+  },
+  {
+   "order": 7,
+   "node_id": "G06",
+   "label": "Contabilidad verifica el comprobante"
+  },
+  {
+   "order": 8,
+   "node_id": "G07",
+   "label": "Se activa la toma de medidas"
+  },
+  {
+   "order": 9,
+   "node_id": "G08",
+   "label": "El instalador mide y levanta el acta"
+  },
+  {
+   "order": 10,
+   "node_id": "G09",
+   "label": "Ingeniería despieza cada vano"
+  },
+  {
+   "order": 11,
+   "node_id": "G10",
+   "label": "Planos y cortes a producción"
+  },
+  {
+   "order": 12,
+   "node_id": "G11",
+   "label": "Producción distribuye el trabajo"
+  },
+  {
+   "order": 13,
+   "node_id": "G12",
+   "label": "Cada área registra su avance"
+  },
+  {
+   "order": 14,
+   "node_id": "G13",
+   "label": "Gerencia mira el tablero"
+  },
+  {
+   "order": 15,
+   "node_id": "G18",
+   "label": "Gerencia pregunta por voz"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "G01",
+   "stage": "nucleo",
+   "order": 1,
+   "title": "Modelo de estados del proyecto",
+   "summary": "La pregunta '¿en qué va este proyecto?' no tiene un lugar único donde responderse.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Máquina de estados por tarea validada en el dominio",
+    "Timestamps UTC explícitos en cada transición",
+    "Índice único parcial impide duplicar la tarea de cotización"
+   ],
+   "improve": [
+    "No existe campo de estado del proyecto",
+    "No hay historial de etapas del proyecto",
+    "Nada impide saltar de cotización a despiece"
+   ],
+   "evidence": [
+    "Backend/src/Domain/Entities/Project.cs:40-50",
+    "Backend/src/Domain/Enums/ProjectTaskType.cs:5-15"
+   ],
+   "affected": [
+    "gerencia",
+    "tecnico"
+   ]
+  },
+  {
+   "id": "G02",
+   "stage": "nucleo",
+   "order": 2,
+   "title": "Traspaso de comercial a presupuesto",
+   "summary": "El proyecto pasa a presupuesto con una tarea formal en lugar de un correo informal.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Unicidad garantizada por índice único parcial en base de datos",
+    "Traducción directa de la violación a 409, sin preconsultas",
+    "Registra responsable y área"
+   ],
+   "improve": [
+    "No exige documentos antes de enviar a presupuesto"
+   ],
+   "evidence": [
+    "Backend/src/Api/Controllers/ProjectsController.cs:58-77"
+   ],
+   "affected": [
+    "comercial",
+    "presupuesto"
+   ]
+  },
+  {
+   "id": "G03",
+   "stage": "nucleo",
+   "order": 3,
+   "title": "Registro de la decisión del cliente",
+   "summary": "El sí o el no del cliente queda registrado con autor, fecha y vínculo a la presentación.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Unicidad por cotización y por tarea de presentación",
+    "Enum validado antes de persistir",
+    "Rol exigido en el servidor, no en el cliente"
+   ],
+   "improve": [
+    "La decisión no mueve ningún estado del proyecto por sí sola"
+   ],
+   "evidence": [
+    "Backend/src/Api/Controllers/ClientQuotationDecisionController.cs:13-24",
+    "Backend/src/Infrastructure/Persistence/Configurations/ClientQuotationDecisionConfiguration.cs:24-25"
+   ],
+   "affected": [
+    "comercial",
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G04",
+   "stage": "nucleo",
+   "order": 4,
+   "title": "Seguimiento de los no",
+   "summary": "El rechazo se registra, pero el motivo es opcional y nadie hace seguimiento.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "needs_work",
+   "tone": "partial",
+   "good": [
+    "El rechazo queda trazado con autor y fecha",
+    "La nota libre permite recuperar contexto"
+   ],
+   "improve": [
+    "La nota es opcional incluso para Rejected",
+    "Sin motivo tipificado no se puede agrupar por causa de pérdida",
+    "No existe tarea de contacto posterior"
+   ],
+   "evidence": [
+    "Backend/src/Application/Features/ClientQuotationDecisions/ClientQuotationDecisionService.cs:30",
+    "Backend/src/Domain/Enums/ProjectTaskType.cs"
+   ],
+   "affected": [
+    "gerencia",
+    "comercial"
+   ]
+  },
+  {
+   "id": "G05",
+   "stage": "anticipo",
+   "order": 5,
+   "title": "Solicitud y carga del anticipo",
+   "summary": "Aprobada la cotización, contabilidad registra el anticipo con monto, referencia y autor.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Separación real: quien envía no es quien registra",
+    "Vinculado a la cotización comercial, al handoff contable y a la tarea de origen"
+   ],
+   "improve": [
+    "No se valida que el monto coincida con el porcentaje pactado"
+   ],
+   "evidence": [
+    "Backend/src/Api/Controllers/AccountingController.cs:16-24",
+    "Backend/src/Domain/Entities/InitialDeposit.cs:19-31"
+   ],
+   "affected": [
+    "contabilidad",
+    "comercial"
+   ]
+  },
+  {
+   "id": "G06",
+   "stage": "anticipo",
+   "order": 6,
+   "title": "Verificación del comprobante",
+   "summary": "Contabilidad aprueba o rechaza; el rechazo genera una tarea de corrección.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Guarda explícita contra doble decisión",
+    "Documentos de verificación adjuntos",
+    "El rechazo no deja el proyecto en el aire"
+   ],
+   "improve": [
+    "No hay plazos ni alerta si la verificación queda pendiente"
+   ],
+   "evidence": [
+    "Backend/src/Domain/Entities/DepositVerification.cs:5,16,20,25,30",
+    "Backend/src/Api/Controllers/DepositVerificationsController.cs:24-25"
+   ],
+   "affected": [
+    "contabilidad",
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G07",
+   "stage": "anticipo",
+   "order": 7,
+   "title": "Activación de la toma de medidas",
+   "summary": "Aprobado el anticipo, la tarea de medición se crea sola.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Activación automática al aprobar",
+    "Idempotente: verifica que no exista tarea o anticipo previo"
+   ],
+   "improve": [
+    "La asignación depende de un subject configurado, no de una carga de trabajo"
+   ],
+   "evidence": [
+    "Backend/src/Infrastructure/Persistence/Stores/EfDepositVerificationStore.cs:110,126"
+   ],
+   "affected": [
+    "instalacion",
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G08",
+   "stage": "medidas",
+   "order": 8,
+   "title": "Acta de vanos y medidas",
+   "summary": "El instalador mide, dibuja cada vano y entrega el acta que ingeniería usará.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Croquis versionados con revisión incremental y hash SHA-256",
+    "Eventos por ronda de apertura",
+    "Reporte por entrega de medidas"
+   ],
+   "improve": [
+    "No se encontró confirmación del cliente sobre las medidas",
+    "Las medidas se validan internamente, no contra el cliente"
+   ],
+   "evidence": [
+    "Backend/src/Domain/Entities/MeasurementSketchVersion.cs:6",
+    "Backend/src/Api/Controllers/MeasurementsController.cs:10-45",
+    "Backend/src/Api/Controllers/OpeningRecordsController.cs:11-28"
+   ],
+   "affected": [
+    "instalacion",
+    "cliente",
+    "produccion"
+   ]
+  },
+  {
+   "id": "G09",
+   "stage": "medidas",
+   "order": 9,
+   "title": "Despiece de ingeniería",
+   "summary": "Cada vano se descompone en estructura, apertura, vidrio y medida, con acta de cierre.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Checklist por estructura con verificación ítem por ítem",
+    "Paquete incremental con eventos de quién verificó y cuándo",
+    "Acta de ingeniería con documentos adjuntos"
+   ],
+   "improve": [
+    "El paquete terminado no dispara nada hacia producción"
+   ],
+   "evidence": [
+    "Backend/src/Api/Controllers/EngineeringController.cs:9-35",
+    "Backend/src/Api/Controllers/EngineeringOperationsController.cs:9-19"
+   ],
+   "affected": [
+    "ingenieria",
+    "produccion"
+   ]
+  },
+  {
+   "id": "G10",
+   "stage": "produccion",
+   "order": 10,
+   "title": "Planos y cortes entregados a producción",
+   "summary": "La entrega formal de planos y cortes no existe en el sistema.",
+   "implemented": "FALSE",
+   "reliability": 0,
+   "quality": "needs_work",
+   "tone": "fail",
+   "good": [],
+   "improve": [
+    "Definir el entregable de cortes y su formato",
+    "Definir si reemplaza o complementa la entrega actual fuera del sistema"
+   ],
+   "evidence": [
+    "Búsqueda negativa: grep -ri 'cutting|plano de corte|corte' en src/Domain y src/Application/Features → 0 resultados"
+   ],
+   "affected": [
+    "produccion",
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G11",
+   "stage": "produccion",
+   "order": 11,
+   "title": "Distribución del trabajo en producción",
+   "summary": "No hay dónde repartir el trabajo; el rol existe pero nadie puede tenerlo.",
+   "implemented": "FALSE",
+   "reliability": 0,
+   "quality": "needs_work",
+   "tone": "fail",
+   "good": [
+    "El rol Production ya está declarado en el dominio"
+   ],
+   "improve": [
+    "El rol no se puede asignar: sin opciones ni resolver",
+    "No existe entidad de orden de trabajo"
+   ],
+   "evidence": [
+    "Backend/src/Domain/Enums/SystemRole.cs:10",
+    "Búsqueda negativa: grep -rn 'SystemRole.Production' src → 0 usos"
+   ],
+   "affected": [
+    "produccion"
+   ]
+  },
+  {
+   "id": "G12",
+   "stage": "produccion",
+   "order": 12,
+   "title": "Registro de avance por área",
+   "summary": "Declarado futuro por la rúbrica. La base de tareas existe; la granularidad de producción no.",
+   "implemented": "FALSE",
+   "reliability": 0,
+   "quality": "needs_work",
+   "tone": "fail",
+   "good": [
+    "Las tareas ya tienen área, estado, responsable y fechas"
+   ],
+   "improve": [
+    "Definir granularidad: por proyecto, por ítem o por etapa",
+    "Decidir quién registra el avance"
+   ],
+   "evidence": [
+    "Backend/src/Domain/Entities/ProjectTask.cs"
+   ],
+   "affected": [
+    "produccion",
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G13",
+   "stage": "produccion",
+   "order": 13,
+   "title": "Dashboard gerencial",
+   "summary": "Existe y funciona, pero mide tareas del embudo, no avance de obra.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "El orden de atención lo decide el backend",
+    "El front no recalcula Leak Time ni estados",
+    "Cubre las cinco áreas operativas"
+   ],
+   "improve": [
+    "Sin etapa ni avance de proyecto",
+    "Sin tiempo por etapa ni proyectos detenidos",
+    "Con los datos actuales no se puede calcular el indicador que gerencia pide"
+   ],
+   "evidence": [
+    "Backend/src/Application/Features/Management/ManagementContracts.cs:22-32",
+    "Backend/src/Application/Features/Management/GetManagementOverviewUseCase.cs:20-25"
+   ],
+   "affected": [
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G14",
+   "stage": "plataforma",
+   "order": 14,
+   "title": "Roles, permisos y notificaciones",
+   "summary": "Nueve roles con validación server-side; el header de rol activo no es spoofeable.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "works_not_best",
+   "tone": "ok",
+   "good": [
+    "El rol se resuelve desde el subject del token, nunca del cliente",
+    "El header de rol activo se valida contra los roles resueltos",
+    "Filtro global: todo exige rol activo salvo la identidad",
+    "Ocho tipos de notificación, incluidas las del anticipo"
+   ],
+   "improve": [
+    "Los roles viven en variables de entorno, no en base de datos",
+    "Production y Logistics no se pueden asignar",
+    "No hay entrega externa de notificaciones"
+   ],
+   "evidence": [
+    "Backend/src/Api/Authorization/ActiveRoleAuthorization.cs:17-30,54-59",
+    "Backend/src/Domain/Enums/SystemRole.cs:5-13",
+    "Backend/src/Domain/Enums/NotificationKind.cs:3"
+   ],
+   "affected": [
+    "todas las areas",
+    "tecnico"
+   ]
+  },
+  {
+   "id": "G15",
+   "stage": "plataforma",
+   "order": 15,
+   "title": "Auditoría e historial",
+   "summary": "Cada subsistema escribe sus eventos; no hay vista unificada.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Convención consistente de RecordedBy en todas las entidades",
+    "Seis fuentes de eventos por dominio con fecha y actor"
+   ],
+   "improve": [
+    "Sin endpoint de consulta de auditoría",
+    "Reconstruir la historia exige unir seis tablas",
+    "No hay alerta de proyectos detenidos"
+   ],
+   "evidence": [
+    "Backend/src/Domain/Entities/Incremental/",
+    "Backend/src/Domain/Entities/InitialDeposit.cs:30-31"
+   ],
+   "affected": [
+    "gerencia",
+    "tecnico"
+   ]
+  },
+  {
+   "id": "G16",
+   "stage": "plataforma",
+   "order": 16,
+   "title": "Errores, observabilidad y despliegue",
+   "summary": "ProblemDetails correcto en dos casos; el resto es 500. Sin CI.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "needs_work",
+   "tone": "partial",
+   "good": [
+    "Intelligence mide por fase y no registra contenido ni credenciales",
+    "El backend no filtra detalles internos al cliente"
+   ],
+   "improve": [
+    "Solo dos excepciones mapeadas; el resto 500",
+    "Sin correlación entre servicios",
+    "Sin CI en ninguno de los tres repos",
+    "La suite del frontend no corre completa por versión de Node"
+   ],
+   "evidence": [
+    "Backend/src/Api/Errors/ApiExceptionHandler.cs:12,23,27",
+    "Intelligence/app/core/latency.py:94",
+    "Ausencia de .github/ en los tres repos"
+   ],
+   "affected": [
+    "tecnico",
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G17",
+   "stage": "plataforma",
+   "order": 17,
+   "title": "Seguridad y datos del cliente",
+   "summary": "Autorización server-side aplicada también a lecturas; el agente nunca ve credenciales.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "ProjectReadScope decide lectura por subject, rol y tarea asignada",
+    "Descarga de documentos pasa por control de acceso",
+    "SecretStr y CredentialGuard aíslan las credenciales del modelo"
+   ],
+   "improve": [
+    "Token en sessionStorage, no en cookie httpOnly",
+    "Sin cifrado en reposo de documentos",
+    "Almacenamiento local al servidor"
+   ],
+   "evidence": [
+    "Backend/src/Application/Access/ProjectReadAccess.cs:31",
+    "Backend/src/Application/Features/ProjectDocuments/ProjectDocumentAccess.cs:9-20",
+    "Intelligence/app/agent/security.py"
+   ],
+   "affected": [
+    "cliente",
+    "tecnico"
+   ]
+  },
+  {
+   "id": "G18",
+   "stage": "consulta",
+   "order": 18,
+   "title": "Agente de consulta por texto y voz",
+   "summary": "Quince herramientas de solo lectura, voz completa y respuestas con evidencia verificada.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Sin herramienta de escritura ni proxy HTTP genérico",
+    "Argumentos validados y evidencia acotada por run",
+    "Referencias construidas desde resultados reales, no desde el modelo",
+    "STT, TTS y Realtime con credenciales efímeras"
+   ],
+   "improve": [
+    "La rama está 15 días atrás del backend",
+    "No consume aún los contratos de entrega incremental",
+    "No genera documentos"
+   ],
+   "evidence": [
+    "Intelligence/app/agent/toolbox.py",
+    "Intelligence/app/api/voice.py:95,100,115",
+    "Intelligence/app/api/live.py:94,163"
+   ],
+   "affected": [
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G19",
+   "stage": "consulta",
+   "order": 19,
+   "title": "Reportes y exportaciones",
+   "summary": "El backend genera reportes técnicos; el agente no produce reportes ad-hoc.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "good": [
+    "Patrón de generación server-side probado",
+    "Exportación ZIP de documentos actuales y del snapshot inicial"
+   ],
+   "improve": [
+    "Sin reportes pedidos por chat o voz",
+    "El agente no puede escribir para generarlos"
+   ],
+   "evidence": [
+    "Backend/src/Application/Features/Measurements/MeasurementReportName.cs:5",
+    "Backend/src/Api/Controllers/ProjectDocumentsController.cs:39-41"
+   ],
+   "affected": [
+    "gerencia"
+   ]
+  },
+  {
+   "id": "G20",
+   "stage": "nucleo",
+   "order": 20,
+   "title": "Cotización técnica y comercial",
+   "summary": "El bloque más maduro: preview, confirmación, revisión comercial y archivo final.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Importes como numeric(20,2)",
+    "Concurrencia resuelta por índice único de versión",
+    "Compensación de archivos si falla la transacción"
+   ],
+   "improve": [
+    "La migración de dinero redondea a dos decimales de forma irreversible"
+   ],
+   "evidence": [
+    "Backend/src/Api/Controllers/BudgetQuotationController.cs:18-45",
+    "Backend/src/Api/Controllers/CommercialQuotationController.cs:14-52",
+    "Backend/src/Api/Controllers/QuotationViewsController.cs:9-27"
+   ],
+   "affected": [
+    "presupuesto",
+    "comercial"
+   ]
+  },
+  {
+   "id": "G21",
+   "stage": "plataforma",
+   "order": 21,
+   "title": "Documentos del proyecto",
+   "summary": "Planos, fotos y comprobantes ordenados, versionados y con control de acceso.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Subida por lote con streaming y límites",
+    "Versionado y reemplazo controlado",
+    "Snapshots que preservan el estado al momento del envío"
+   ],
+   "improve": [
+    "Archivos en almacenamiento local",
+    "Sin limpieza de huérfanos tras fallo entre base y filesystem"
+   ],
+   "evidence": [
+    "Backend/src/Api/Controllers/ProjectDocumentsController.cs:9-41"
+   ],
+   "affected": [
+    "todas las areas"
+   ]
+  },
+  {
+   "id": "G22",
+   "stage": "nucleo",
+   "order": 22,
+   "title": "Recotización y rondas",
+   "summary": "Si el cliente pide cambios, la cotización vuelve sin perder historial.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "good": [
+    "Rondas consultables y vinculadas a la decisión",
+    "Permite comparar contra qué se aprobó"
+   ],
+   "improve": [
+    "Sin límite de rondas ni alerta por demora"
+   ],
+   "evidence": [
+    "Backend/src/Api/Controllers/RequotationController.cs:10-17",
+    "Backend/src/Api/Controllers/QuotationViewsController.cs:13"
+   ],
+   "affected": [
+    "comercial",
+    "presupuesto"
+   ]
+  },
+  {
+   "id": "G23",
+   "stage": "plataforma",
+   "order": 23,
+   "title": "Vínculo con el Pre-cotizador",
+   "summary": "El lead de la landing no se convierte en proyecto de forma automática.",
+   "implemented": "FALSE",
+   "reliability": 0,
+   "quality": "needs_work",
+   "tone": "fail",
+   "good": [],
+   "improve": [
+    "Decidir si el enlace es por cliente o por proyecto",
+    "Definir qué datos del lead viajan al proyecto"
+   ],
+   "evidence": [
+    "Búsqueda negativa: grep -ri 'precotiz|pre-cotiz|precotizador' en src de los tres repos → 0 resultados"
+   ],
+   "affected": [
+    "comercial",
+    "negocio"
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from": "G01",
+   "to": "G02",
+   "type": "alimenta"
+  },
+  {
+   "from": "G02",
+   "to": "G20",
+   "type": "alimenta"
+  },
+  {
+   "from": "G20",
+   "to": "G03",
+   "type": "alimenta"
+  },
+  {
+   "from": "G03",
+   "to": "G22",
+   "type": "alimenta"
+  },
+  {
+   "from": "G03",
+   "to": "G04",
+   "type": "alimenta"
+  },
+  {
+   "from": "G03",
+   "to": "G05",
+   "type": "alimenta"
+  },
+  {
+   "from": "G05",
+   "to": "G06",
+   "type": "depende de"
+  },
+  {
+   "from": "G06",
+   "to": "G07",
+   "type": "depende de"
+  },
+  {
+   "from": "G07",
+   "to": "G08",
+   "type": "alimenta"
+  },
+  {
+   "from": "G08",
+   "to": "G09",
+   "type": "alimenta"
+  },
+  {
+   "from": "G09",
+   "to": "G10",
+   "type": "alimenta"
+  },
+  {
+   "from": "G10",
+   "to": "G11",
+   "type": "alimenta"
+  },
+  {
+   "from": "G11",
+   "to": "G12",
+   "type": "alimenta"
+  },
+  {
+   "from": "G12",
+   "to": "G13",
+   "type": "alimenta"
+  },
+  {
+   "from": "G18",
+   "to": "G13",
+   "type": "acopla datos"
+  },
+  {
+   "from": "G21",
+   "to": "G08",
+   "type": "alimenta"
+  },
+  {
+   "from": "G21",
+   "to": "G09",
+   "type": "alimenta"
+  },
+  {
+   "from": "G14",
+   "to": "G03",
+   "type": "depende de"
+  },
+  {
+   "from": "G22",
+   "to": "G20",
+   "type": "acopla datos"
+  }
+ ],
+ "breaks": [
+  {
+   "from": "G09",
+   "to": "G10",
+   "reason": "No existe entregable de planos y cortes hacia producción"
+  },
+  {
+   "from": "G11",
+   "to": "G12",
+   "reason": "No existe entidad de orden de trabajo ni registro de avance por área"
+  }
+ ],
+ "axes": [
+  {
+   "id": "E1",
+   "name": "Integridad del flujo"
+  },
+  {
+   "id": "E2",
+   "name": "Trazabilidad"
+  },
+  {
+   "id": "E3",
+   "name": "Responsabilidad y roles"
+  },
+  {
+   "id": "E4",
+   "name": "Calidad de datos"
+  },
+  {
+   "id": "E5",
+   "name": "Confiabilidad"
+  },
+  {
+   "id": "E6",
+   "name": "Observabilidad y auditoría"
+  },
+  {
+   "id": "E7",
+   "name": "Seguridad y privacidad"
+  },
+  {
+   "id": "E8",
+   "name": "Pruebas"
+  },
+  {
+   "id": "E9",
+   "name": "Mantenibilidad"
+  },
+  {
+   "id": "E10",
+   "name": "Experiencia de uso"
+  },
+  {
+   "id": "E11",
+   "name": "Capacidad de escalar"
+  }
+ ],
+ "matrix": {
+  "G01": [
+   1,
+   1,
+   1,
+   null,
+   1,
+   1,
+   null,
+   null,
+   2,
+   1,
+   1
+  ],
+  "G02": [
+   3,
+   3,
+   2,
+   null,
+   3,
+   2,
+   null,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G03": [
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   null,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G04": [
+   2,
+   2,
+   1,
+   1,
+   2,
+   2,
+   null,
+   2,
+   2,
+   1,
+   1
+  ],
+  "G05": [
+   3,
+   3,
+   3,
+   3,
+   3,
+   2,
+   null,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G06": [
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G07": [
+   3,
+   3,
+   3,
+   null,
+   3,
+   2,
+   null,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G08": [
+   2,
+   3,
+   2,
+   3,
+   2,
+   2,
+   null,
+   3,
+   2,
+   1,
+   2
+  ],
+  "G09": [
+   3,
+   3,
+   2,
+   3,
+   3,
+   2,
+   null,
+   3,
+   3,
+   1,
+   2
+  ],
+  "G10": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   null,
+   0,
+   0,
+   0,
+   0
+  ],
+  "G11": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   null,
+   0,
+   0,
+   0,
+   0
+  ],
+  "G12": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   null,
+   0,
+   0,
+   0,
+   0
+  ],
+  "G13": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   1,
+   null,
+   3,
+   2,
+   2,
+   1
+  ],
+  "G14": [
+   3,
+   3,
+   3,
+   null,
+   3,
+   2,
+   3,
+   3,
+   3,
+   2,
+   1
+  ],
+  "G15": [
+   2,
+   2,
+   2,
+   null,
+   2,
+   1,
+   2,
+   2,
+   2,
+   1,
+   1
+  ],
+  "G16": [
+   null,
+   null,
+   null,
+   null,
+   1,
+   1,
+   2,
+   2,
+   2,
+   null,
+   1
+  ],
+  "G17": [
+   null,
+   2,
+   3,
+   2,
+   null,
+   2,
+   3,
+   3,
+   3,
+   null,
+   null
+  ],
+  "G18": [
+   null,
+   3,
+   3,
+   2,
+   3,
+   2,
+   3,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G19": [
+   null,
+   2,
+   2,
+   2,
+   2,
+   1,
+   null,
+   2,
+   2,
+   1,
+   1
+  ],
+  "G20": [
+   3,
+   3,
+   3,
+   3,
+   3,
+   2,
+   3,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G21": [
+   null,
+   3,
+   3,
+   3,
+   3,
+   2,
+   3,
+   3,
+   3,
+   2,
+   2
+  ],
+  "G22": [
+   3,
+   3,
+   2,
+   3,
+   3,
+   2,
+   null,
+   3,
+   2,
+   1,
+   2
+  ],
+  "G23": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   null,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
+ "hypotheses": [
+  {
+   "id": "HG1",
+   "statement": "No existe un modelo de estado único del proyecto.",
+   "verdict": "confirmed",
+   "nodes": [
+    "G01",
+    "G13"
+   ],
+   "evidence": "Project.cs:40-50 no tiene campo de estado. El avance se deriva de 11 tipos de tarea; existe estado por tarea, no del proyecto."
+  },
+  {
+   "id": "HG2",
+   "statement": "No hay trazabilidad de punta a punta desde el lead.",
+   "verdict": "partially_confirmed",
+   "nodes": [
+    "G23",
+    "G01"
+   ],
+   "evidence": "Dentro del sistema, ProjectId une cotización, anticipo, medidas y despiece. Hacia el Pre-cotizador no hay vínculo."
+  },
+  {
+   "id": "HG3",
+   "statement": "El comprobante se guarda sin estado, responsable ni vínculo con la toma de medidas.",
+   "verdict": "refuted",
+   "nodes": [
+    "G06",
+    "G07"
+   ],
+   "evidence": "DepositVerification tiene estado Pending/Approved/Rejected, revisor y documentos; al aprobarse crea TakeMeasurements (EfDepositVerificationStore.cs:126)."
+  },
+  {
+   "id": "HG4",
+   "statement": "No se registran razones de pérdida ni hay seguimiento del no.",
+   "verdict": "confirmed",
+   "nodes": [
+    "G04"
+   ],
+   "evidence": "ClientQuotationDecision.Note es opcional y no existe tipo de tarea de seguimiento."
+  },
+  {
+   "id": "HG5",
+   "statement": "Las medidas del acta no están versionadas.",
+   "verdict": "refuted",
+   "nodes": [
+    "G08"
+   ],
+   "evidence": "MeasurementSketchVersion guarda revision, drawingJson y webpSha256; hay eventos por ronda."
+  },
+  {
+   "id": "HG6",
+   "statement": "No hay roles ni permisos por área.",
+   "verdict": "refuted",
+   "nodes": [
+    "G14"
+   ],
+   "evidence": "SystemRole con 9 valores, ActiveRoleFilter global y cuatro policies; el rol activo se valida contra el subject."
+  },
+  {
+   "id": "HG7",
+   "statement": "Los datos capturados no alcanzan para el dashboard de avance.",
+   "verdict": "confirmed",
+   "nodes": [
+    "G13"
+   ],
+   "evidence": "ManagementOverviewResponse agrega solo tareas y Lead Time; no hay etapa ni avance de proyecto."
+  },
+  {
+   "id": "HG8",
+   "statement": "El avance del proyecto se infiere de la existencia de tareas, sin garantía de que cada etapa tenga una.",
+   "verdict": "confirmed",
+   "nodes": [
+    "G01"
+   ],
+   "evidence": "Nada impide crear un proyecto sin tareas ni saltar de cotización a despiece."
+  },
+  {
+   "id": "HG9",
+   "statement": "Intelligence no consume los contratos de entrega incremental agregados el 12 de noviembre.",
+   "verdict": "not_conclusive",
+   "nodes": [
+    "G18"
+   ],
+   "evidence": "Intelligence no recibe commits desde el 28 de octubre; sus 15 tools no incluyen paquetes de ingeniería ni filing de aperturas. Falta determinar si los necesita para responder."
+  },
+  {
+   "id": "HG10",
+   "statement": "Los roles Production y Logistics no se pueden asignar a ninguna persona.",
+   "verdict": "confirmed",
+   "nodes": [
+    "G11",
+    "G14"
+   ],
+   "evidence": "ConfiguredRoleResolver no los mapea, no existen *AssigneeOptions y SystemRole.Production no se usa en ningún punto del código."
+  }
+ ],
+ "findings": [
+  {
+   "id": "F01",
+   "severity": "P0",
+   "title": "No existe estado del proyecto",
+   "description": "El avance no tiene fuente única de verdad; se infiere de tareas sin garantía de completitud.",
+   "nodes": [
+    "G01",
+    "G13"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F02",
+   "severity": "P0",
+   "title": "El tramo de producción no existe",
+   "description": "Sin planos de corte, sin distribución del trabajo y sin registro de avance por área.",
+   "nodes": [
+    "G10",
+    "G11",
+    "G12"
+   ],
+   "effort": "L"
+  },
+  {
+   "id": "F03",
+   "severity": "P0",
+   "title": "El dashboard mide tareas, no proyectos",
+   "description": "Responde qué tareas están atrasadas, no cómo va cada obra. No puede calcular avance ni tiempo por etapa.",
+   "nodes": [
+    "G13"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F04",
+   "severity": "P0",
+   "title": "Intelligence está 15 días atrás",
+   "description": "No recibe commits desde el 28 de octubre mientras backend y frontend recibieron 16 el 12 de noviembre.",
+   "nodes": [
+    "G18",
+    "G19"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F05",
+   "severity": "P1",
+   "title": "Roles en configuración, no en base de datos",
+   "description": "Nueve roles definidos; Production y Logistics no se pueden asignar. No hay alta de usuarios.",
+   "nodes": [
+    "G11",
+    "G14"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F06",
+   "severity": "P1",
+   "title": "Auditoría fragmentada",
+   "description": "Seis tablas de eventos por dominio, sin vista unificada ni endpoint de consulta.",
+   "nodes": [
+    "G15"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F07",
+   "severity": "P1",
+   "title": "El motivo de pérdida es opcional",
+   "description": "El rechazo se registra con nota libre y sin tarea de seguimiento.",
+   "nodes": [
+    "G04"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F08",
+   "severity": "P1",
+   "title": "Sin CI y suite del frontend incompleta",
+   "description": "Ningún repo tiene pipeline; 56 workers de Vitest no arrancan por Node 20.",
+   "nodes": [
+    "G16"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F09",
+   "severity": "P1",
+   "title": "El acta de vanos no tiene confirmación del cliente",
+   "description": "Las medidas se validan internamente; el paso 6 del flujo narrado no está cubierto.",
+   "nodes": [
+    "G08"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F10",
+   "severity": "P1",
+   "title": "Sin integración con el Pre-cotizador",
+   "description": "El lead no se convierte en proyecto sin recaptura manual.",
+   "nodes": [
+    "G23"
+   ],
+   "effort": "L"
+  },
+  {
+   "id": "F11",
+   "severity": "P2",
+   "title": "Las notificaciones no salen del sistema",
+   "description": "Sin correo ni push; solo se ven dentro de la aplicación.",
+   "nodes": [
+    "G14"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F12",
+   "severity": "P2",
+   "title": "El agente no genera reportes",
+   "description": "Responde preguntas; no produce documentos pedidos por chat o voz.",
+   "nodes": [
+    "G19"
+   ],
+   "effort": "M"
+  },
+  {
+   "id": "F13",
+   "severity": "P2",
+   "title": "Dos pipelines de migración",
+   "description": "EF Core para el backend y SQL propio para la persistencia de Intelligence.",
+   "nodes": [
+    "G16"
+   ],
+   "effort": "S"
+  },
+  {
+   "id": "F14",
+   "severity": "P2",
+   "title": "Reglas del repositorio desactualizadas",
+   "description": "AGENTS.md no refleja los roles por área ni la persistencia de conversaciones.",
+   "nodes": [
+    "G14",
+    "G18"
+   ],
+   "effort": "S"
+  }
+ ],
+ "highlights": {
+  "top": [
+   "F01",
+   "F02",
+   "F03",
+   "F04",
+   "F09"
+  ],
+  "strengths": [
+   "Tramo cotización → anticipo → medidas → ingeniería completo y verificado",
+   "Separación real de funciones entre comercial, contabilidad, instalación e ingeniería",
+   "Idempotencia garantizada por índices únicos, no por lógica de aplicación",
+   "Croquis versionados con revisión incremental y hash SHA-256",
+   "Agente de 15 herramientas cerradas, sin escritura ni proxy genérico",
+   "Concurrencia resuelta en base de datos para versiones, handoffs y decisiones",
+   "El front no recalcula Leak Time, precios ni estados",
+   "1.188 + 1.246 + 612 pruebas automatizadas en tres lenguajes"
+  ]
+ },
+ "decisions_needed": [
+  "Si el proyecto tendrá estado explícito propio o seguirá derivándose de tareas",
+  "Si el tramo de producción entra en el alcance de esta fase o se declara fuera",
+  "Qué indicadores quiere ver primero gerencia y con qué granularidad",
+  "Quién registra el avance: cada área, producción centralizada o una persona designada",
+  "Si la integración con el Pre-cotizador es requisito o aspiración"
+ ],
+ "render_hints": {
+  "layout": "left_to_right",
+  "stage_order": [
+   "nucleo",
+   "anticipo",
+   "medidas",
+   "produccion",
+   "consulta",
+   "plataforma"
+  ],
+  "tone_colors": {
+   "ok": "#1f6f3f",
+   "partial": "#8a6d1f",
+   "fail": "#8a1f1f"
+  },
+  "tone_labels": {
+   "ok": "Implementado y confiable",
+   "partial": "Funciona con bordes",
+   "fail": "No implementado"
+  },
+  "badge_labels": {
+   "TRUE": "Implementado",
+   "PARTIAL": "Parcial",
+   "FALSE": "No implementado"
+  },
+  "reliability_labels": {
+   "0": "Sin garantía",
+   "1": "Caso de éxito",
+   "2": "Determinista"
+  },
+  "quality_labels": {
+   "solid": "Bien resuelto",
+   "works_not_best": "Funciona, no es la mejor forma",
+   "needs_work": "Requiere trabajo"
+  },
+  "duration_hint_seconds": {
+   "per_node": 6,
+   "per_stage_intro": 4,
+   "total_flow": 16
+  },
+  "emphasis": [
+   "G03",
+   "G06",
+   "G09",
+   "G18",
+   "G20"
+  ],
+  "contrast_pairs": [
+   [
+    "G09",
+    "G10"
+   ],
+   [
+    "G13",
+    "G18"
+   ],
+   [
+    "G14",
+    "G11"
+   ]
+  ],
+  "tone_rule": "ok = implemented TRUE y reliability 2; partial = PARTIAL o (TRUE y reliability 1); fail = FALSE",
+  "narrative_arc": "abrir con lo que está construido (anticipo, medidas, ingeniería), mostrar el corte en producción, cerrar con la capa agéntica como activo diferencial"
+ }
+}

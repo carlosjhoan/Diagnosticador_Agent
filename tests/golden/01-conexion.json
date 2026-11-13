@@ -1,0 +1,38 @@
+{
+  "question": "¿Cómo se conectan la Landing y el Comercial?",
+  "capturedAt": "2026-11-11T20:04:25.841Z",
+  "ms": 5300,
+  "response": {
+    "view": "flow",
+    "title": "Landing y Comercial: envío del lead",
+    "story": "Landing y Comercial se conectan por un único seam: el envío del lead mediante POST /api/public/experience-submissions bajo el contrato sng-public-experience-v1. Esa costura está rota: la URL del Cotizador está vacía y el contrato tiene un TODO abierto sobre ideaPhoto. Por eso el lead no entra al sistema.",
+    "projectId": null,
+    "focus": [
+      "S1"
+    ],
+    "intents": [
+      {
+        "texto": "¿Cómo se conectan la Landing y el Comercial?",
+        "proyecto": "ninguno",
+        "tipo": "conexion",
+        "score": 0.97,
+        "inScope": true
+      }
+    ],
+    "lectura": "Entiendo que pregunta cómo se vinculan la Landing y el Comercial.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.86,
+        "responde": 0.91,
+        "severidad": 0.8
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 3598,
+        "output_tokens": 57
+      }
+    }
+  }
+}

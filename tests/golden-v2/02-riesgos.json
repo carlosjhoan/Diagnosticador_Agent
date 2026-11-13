@@ -1,0 +1,171 @@
+{
+  "question": "¿Qué riesgos corro en el Comercial?",
+  "capturedAt": "2026-11-12T03:07:47.635Z",
+  "ms": 8900,
+  "response": {
+    "v": 2,
+    "view": "map",
+    "title": "Riesgos del proyecto Comercial",
+    "story": "El Cotizador concentra cinco hallazgos críticos: un refresh deja el requerimiento en Processing para siempre, no hay reintentos ante un 503 de Gemini, no hay cola y el request HTTP es el job, AI2 corre sin autenticación y el corpus de precios está vacío en producción. A eso se suman dos motores de pricing que pueden dar números distintos y la ausencia de evaluación de calidad de extracción. El proceso de pre-cotización se corta en el paso 3 y no hay forma de retomarlo.",
+    "projectId": "comercial",
+    "focus": [
+      "C-P0-1",
+      "C-P0-2",
+      "C-P0-3",
+      "C-P0-4",
+      "C-P0-5",
+      "C-P1-6",
+      "C-P1-7",
+      "C-P1-11",
+      "C-P2-13",
+      "C-P1-12"
+    ],
+    "layout": [
+      {
+        "type": "kpi-row",
+        "props": {
+          "items": [
+            {
+              "value": "5",
+              "label": "Críticos",
+              "hint": "C-P0-1 a C-P0-5"
+            },
+            {
+              "value": "3",
+              "label": "Altos",
+              "hint": "C-P1-6, C-P1-7, C-P1-11"
+            },
+            {
+              "value": "2",
+              "label": "Medios",
+              "hint": "C-P2-13, C-P1-12"
+            },
+            {
+              "value": "S6",
+              "label": "Costura propia",
+              "hint": "SnG_Consulter desconectado"
+            }
+          ]
+        }
+      },
+      {
+        "type": "list",
+        "props": {
+          "items": [
+            {
+              "title": "El requerimiento queda en Processing para siempre",
+              "text": "Un refresh o cierre de pestaña bloquea el flujo: todo POST posterior devuelve 409 y no hay job de limpieza.",
+              "tag": "C-P0-1",
+              "tone": "critical",
+              "evidence": "ProcessRequirementService.cs:361-368, :122-126"
+            },
+            {
+              "title": "Cero retries y cero circuit breaker",
+              "text": "Un 503 de Gemini al minuto 9 es pérdida total de 10 minutos de trabajo.",
+              "tag": "C-P0-2",
+              "tone": "critical",
+              "evidence": "gemini.py:10-12, gemini_extraction.py:493-497"
+            },
+            {
+              "title": "No hay cola: el request HTTP es el job",
+              "text": "Tres comerciales simultáneos son tres requests de 15 minutos sin supervisión.",
+              "tag": "C-P0-3",
+              "tone": "critical",
+              "evidence": "ProcessClaimedDocumentProcessingAttemptService (registrado, nunca invocado)"
+            },
+            {
+              "title": "AI2 sin autenticación ni rate limit",
+              "text": "Cualquiera en la red puede quemar la cuota de Gemini.",
+              "tag": "C-P0-4",
+              "tone": "critical",
+              "evidence": "cotizador/Cotizador_AI2/app/main.py:1-22"
+            },
+            {
+              "title": "El corpus de precios está vacío en producción",
+              "text": "El corpus es la carpeta de escritorio de un desarrollador y degrada en silencio.",
+              "tag": "C-P0-5",
+              "tone": "critical",
+              "evidence": "appsettings.Development.json:39, appsettings.json, HistoricalQuoteCorpus.cs:26-31"
+            }
+          ],
+          "ordered": false
+        }
+      },
+      {
+        "type": "list",
+        "props": {
+          "items": [
+            {
+              "title": "Dos motores de pricing conviven",
+              "text": "Pueden dar números distintos para el mismo item.",
+              "tag": "C-P1-6",
+              "tone": "high",
+              "evidence": "HistoricalTechnicalPriceEstimator.cs vs PreQuotePreliminaryPricing.cs:52-59"
+            },
+            {
+              "title": "Sin evaluación de calidad de extracción",
+              "text": "33 casos de aceptación en PROPOSED_NOT_EXECUTED: no se sabe si el extractor mejoró o empeoró.",
+              "tag": "C-P1-7",
+              "tone": "high",
+              "evidence": "acceptance_matrix.json, expected_checks.json"
+            },
+            {
+              "title": "El histórico no guarda fecha de cotización",
+              "text": "Una cotización de 2022 pesa igual que una de 2026 y el rango se sesga hacia abajo.",
+              "tag": "C-P1-11",
+              "tone": "high",
+              "evidence": "HistoricalPricingModels.cs:92-97"
+            },
+            {
+              "title": "Sin cacheo de extracción por hash",
+              "text": "El mismo plano re-subido cuesta otros 10 minutos.",
+              "tag": "C-P2-13",
+              "tone": "medium",
+              "evidence": "sin cache en gemini_extraction.py"
+            },
+            {
+              "title": "SnG_Consulter está desconectado",
+              "text": "El pipeline documental más disciplinado del repo queda fuera: dos verdades sobre cómo leer un plano.",
+              "tag": "C-P1-12",
+              "tone": "medium",
+              "evidence": "cero referencias cruzadas en backend/AI2/frontend"
+            }
+          ],
+          "ordered": false
+        }
+      },
+      {
+        "type": "callout",
+        "props": {
+          "tone": "warn",
+          "title": "Punto de corte del proceso",
+          "text": "La pre-cotización se corta en el paso 3 si el comercial refresca la pestaña, y no hay forma de retomarla."
+        }
+      }
+    ],
+    "intents": [
+      {
+        "texto": "¿Qué riesgos corro en el proyecto Comercial?",
+        "proyecto": "comercial",
+        "tipo": "riesgo",
+        "score": 0.97,
+        "inScope": true
+      }
+    ],
+    "lectura": "Pregunta qué riesgos hay o enfrenta en el proyecto Comercial.",
+    "verification": {
+      "status": "ok",
+      "scores": {
+        "respaldada": 0.88,
+        "responde": 0.97,
+        "severidad": 0.95
+      },
+      "threshold": 0.6,
+      "model": "jev-1.14.0",
+      "usage": {
+        "input_tokens": 5029,
+        "output_tokens": 57
+      }
+    }
+  }
+}

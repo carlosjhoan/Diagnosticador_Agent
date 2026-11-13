@@ -1,0 +1,1448 @@
+{
+ "meta": {
+  "title": "Diagnóstico avanzado — Landing de steel and glass",
+  "version": "1.0",
+  "date": "2026-11-12",
+  "purpose": "Describir qué se puede hacer hoy en la landing, qué se puede cambiar sin código y qué no. Fuente de consulta automatizada y de presentación.",
+  "language": "es",
+  "source_markdown": "Docs/diagnosticos/DIAGNOSTICO_LANDING_AVANZADO.md",
+  "sibling_technical": "Docs/diagnosticos/DIAGNOSTICO_LANDING.md",
+  "baseline": [
+   {
+    "repo": "Landing/SnG-Experience-Frontend",
+    "branch": "main",
+    "commit": "d4e1d45",
+    "role": "landing pública y experiencia guiada"
+   }
+  ],
+  "scoring_rules": {
+   "implemented": [
+    "TRUE",
+    "PARTIAL",
+    "FALSE"
+   ],
+   "reliability": [
+    0,
+    1,
+    2
+   ],
+   "quality": [
+    "solid",
+    "works_not_best",
+    "needs_work"
+   ],
+   "notes": [
+    "La configuración ausente (URLs de servicio, credenciales, bucket) no se evalúa como defecto: es condición de puesta en marcha.",
+    "Un proveedor externo apagado no invalida la capacidad; se documenta como condición.",
+    "No verificado en ejecución no resta: la evaluación es por lectura de código y coherencia de la lógica.",
+    "reliability 2 = determinista o explícitamente condicionada, con validaciones y sin caminos silenciosos.",
+    "reliability 1 = funciona en el caso de éxito con bordes no cubiertos.",
+    "reliability 0 = sin garantía lógica o capacidad inexistente."
+   ]
+  },
+  "stage_note": "stage agrupa capacidades para la narrativa; el Markdown detalla dependencias y límites."
+ },
+ "metrics": {
+  "capabilities_total": 13,
+  "implemented_true": 8,
+  "implemented_partial": 3,
+  "implemented_false": 2,
+  "reliability_2": 8,
+  "reliability_1": 3,
+  "reliability_0": 2,
+  "quality_solid": 7,
+  "quality_works_not_best": 4,
+  "quality_needs_work": 2,
+  "hypotheses": 13,
+  "findings_p0": 2,
+  "findings_p1": 5,
+  "findings_p2": 5,
+  "remote_assets": 18,
+  "media_references": 20,
+  "config_files_with_media": 5,
+  "videos": 0,
+  "analytics_dependencies": 0,
+  "public_files": 6,
+  "documented_alt_texts": 4
+ },
+ "stages": [
+  {
+   "id": "presentar",
+   "order": 1,
+   "title": "Presentar",
+   "subtitle": "La marca se muestra",
+   "summary": "Landing institucional, vitrina de proyectos y soluciones, y navegación accesible.",
+   "node_ids": [
+    "L01",
+    "L02",
+    "L10"
+   ]
+  },
+  {
+   "id": "descubrir",
+   "order": 2,
+   "title": "Descubrir",
+   "subtitle": "Del interés a la experiencia",
+   "summary": "Cinco puntos de entrada llevan al visitante al recorrido guiado.",
+   "node_ids": [
+    "L03"
+   ]
+  },
+  {
+   "id": "diagnosticar",
+   "order": 3,
+   "title": "Diagnosticar",
+   "subtitle": "El cliente cuenta su proyecto",
+   "summary": "37 preguntas en 6 escenas, personalización en vivo y carga de documentos.",
+   "node_ids": [
+    "L04",
+    "L05",
+    "L06"
+   ]
+  },
+  {
+   "id": "convertir",
+   "order": 4,
+   "title": "Convertir",
+   "subtitle": "De la visita al proyecto",
+   "summary": "Envío al Cotizador con contrato versionado y, opcionalmente, selección de cita.",
+   "node_ids": [
+    "L07",
+    "L08",
+    "L09"
+   ]
+  },
+  {
+   "id": "sostener",
+   "order": 5,
+   "title": "Sostener",
+   "subtitle": "Lo que permite operar el sitio",
+   "summary": "Publicación, gestión de contenido y media, y medición.",
+   "node_ids": [
+    "L11",
+    "L12",
+    "L13"
+   ]
+  }
+ ],
+ "flow": [
+  {
+   "order": 1,
+   "node_id": "L01",
+   "label": "El visitante llega y entiende la marca"
+  },
+  {
+   "order": 2,
+   "node_id": "L02",
+   "label": "Explora proyectos y soluciones"
+  },
+  {
+   "order": 3,
+   "node_id": "L03",
+   "label": "Entra a la experiencia guiada"
+  },
+  {
+   "order": 4,
+   "node_id": "L04",
+   "label": "Responde 37 preguntas en 6 escenas"
+  },
+  {
+   "order": 5,
+   "node_id": "L05",
+   "label": "Ve su perfil tomar forma en pantalla"
+  },
+  {
+   "order": 6,
+   "node_id": "L06",
+   "label": "Adjunta planos y una foto de su idea"
+  },
+  {
+   "order": 7,
+   "node_id": "L07",
+   "label": "Envía el proyecto al Cotizador"
+  },
+  {
+   "order": 8,
+   "node_id": "L08",
+   "label": "Elige fecha para conocer las soluciones"
+  },
+  {
+   "order": 9,
+   "node_id": "L09",
+   "label": "O escribe directo por Instagram"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "L01",
+   "stage": "presentar",
+   "order": 1,
+   "title": "Landing institucional",
+   "summary": "One-pager de marca con 8 secciones y navegación por anclas.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "can_do": [
+    "Publicar la propuesta de valor de la empresa",
+    "Navegar por anclas entre 8 secciones",
+    "Header que se solidifica al scrollear",
+    "Menú mobile con cierre por Escape"
+   ],
+   "good": [
+    "Sin dependencias de terceros",
+    "Layout y datos separados",
+    "Assets en CDN"
+   ],
+   "limits": [
+    "Titulares y párrafos viven en el JSX: cambiarlos requiere un dev"
+   ],
+   "keywords": [
+    "marca",
+    "inicio",
+    "one-pager",
+    "secciones",
+    "hero"
+   ],
+   "evidence": "src/app/page.tsx:20-33; src/features/home/components/home-hero.tsx:8-14"
+  },
+  {
+   "id": "L02",
+   "stage": "presentar",
+   "order": 2,
+   "title": "Vitrina de proyectos y soluciones",
+   "summary": "Tres proyectos destacados y cinco líneas de solución, data-driven.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "can_do": [
+    "Mostrar 3 proyectos con imagen, título y categoría",
+    "Listar 5 líneas de solución",
+    "Agregar un proyecto editando un arreglo"
+   ],
+   "good": [
+    "Tarjeta reutilizable",
+    "Imágenes responsivas con next/image",
+    "Contenido separado del render"
+   ],
+   "limits": [
+    "Contenido provisional marcado con TODO",
+    "Sin página de detalle ni caso de estudio",
+    "Sin galería ampliable"
+   ],
+   "keywords": [
+    "proyectos",
+    "portafolio",
+    "soluciones",
+    "vitrina",
+    "casos"
+   ],
+   "evidence": "src/features/home/config/home-content.ts:7-14,21; featured-projects.tsx:4-11"
+  },
+  {
+   "id": "L03",
+   "stage": "descubrir",
+   "order": 3,
+   "title": "Acceso a la experiencia guiada",
+   "summary": "El puente entre el interés y el proyecto, presente en cinco puntos del sitio.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "can_do": [
+    "Derivar a /experiencia desde header, hero, teaser, contacto y menú mobile",
+    "Mantener un CTA consistente en todo el sitio"
+   ],
+   "good": [
+    "Destino real, no ancla",
+    "CTA consistente"
+   ],
+   "limits": [
+    "No hay camino alternativo corto para quien no quiere 37 preguntas"
+   ],
+   "keywords": [
+    "CTA",
+    "embudo",
+    "entrada",
+    "experiencia",
+    "derivación"
+   ],
+   "evidence": "home-content.ts:3-10; experience-teaser.tsx:8; contact-section.tsx:5"
+  },
+  {
+   "id": "L04",
+   "stage": "diagnosticar",
+   "order": 4,
+   "title": "Cuestionario guiado de 37 preguntas",
+   "summary": "Seis escenas y 37 preguntas declarativas con lógica condicional.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "can_do": [
+    "Capturar identidad, asesor, proyecto, plazos y tipo de obra",
+    "Capturar prioridades de confort, seguridad, estética y uso",
+    "Aplicar condicionales y limpiar respuestas que dejan de aplicar",
+    "Mostrar progreso por pregunta y por escena"
+   ],
+   "good": [
+    "Cuestionario declarativo",
+    "Renderer genérico",
+    "Condicionales explícitas",
+    "Progreso contextual"
+   ],
+   "limits": [
+    "Sin guardado parcial: recargar borra el avance",
+    "Sin versión corta del formulario"
+   ],
+   "keywords": [
+    "cuestionario",
+    "lead",
+    "diagnóstico",
+    "37 preguntas",
+    "escenas",
+    "condicionales"
+   ],
+   "evidence": "questions.ts:1-175; question-groups.ts; experience-flow.tsx:42-44"
+  },
+  {
+   "id": "L05",
+   "stage": "diagnosticar",
+   "order": 5,
+   "title": "Personalización visual y sonora en vivo",
+   "summary": "El recorrido responde a las respuestas: audio, tinte térmico, seguridad, estética y acabados.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "can_do": [
+    "Reproducir audio ambiental con control",
+    "Aplicar tinte térmico según la intención declarada",
+    "Superponer capas de seguridad por opción elegida",
+    "Cambiar la imagen del espacio según la estética",
+    "Seleccionar acabados sobre hotspots de una fotografía"
+   ],
+   "good": [
+    "Mapeo respuesta a efecto en configuración",
+    "Respaldo neutro si falta un asset"
+   ],
+   "limits": [
+    "Cada efecto nuevo es un desarrollo",
+    "No hay forma de agregar variantes desde un panel"
+   ],
+   "keywords": [
+    "personalización",
+    "audio",
+    "overlays",
+    "acabados",
+    "estética",
+    "inmersivo"
+   ],
+   "evidence": "design-images.ts:8-18; design-finishes.ts:7-30; thermal-effects.ts:8-15; security-effects.ts:5-13"
+  },
+  {
+   "id": "L06",
+   "stage": "diagnosticar",
+   "order": 6,
+   "title": "Documentos y foto de idea",
+   "summary": "Hasta 5 documentos del proyecto y una foto opcional, con validación compartida.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "can_do": [
+    "Adjuntar PDF, XLSX, PNG y JPG hasta 5 archivos",
+    "Aplicar límites de 20 MB por archivo y 100 MB total",
+    "Adjuntar una foto de idea opcional de hasta 20 MB",
+    "Recibir errores específicos en español"
+   ],
+   "good": [
+    "Política única usada por UI y builder",
+    "MIME canónico derivado de la extensión"
+   ],
+   "limits": [
+    "Exigir 1 documento eleva la barrera del lead",
+    "Validación de forma, no de contenido"
+   ],
+   "keywords": [
+    "documentos",
+    "planos",
+    "adjuntos",
+    "archivos",
+    "foto de idea",
+    "límites"
+   ],
+   "evidence": "file-policy.ts:2-14,31-44; idea-photo-policy.ts:1-13"
+  },
+  {
+   "id": "L07",
+   "stage": "convertir",
+   "order": 7,
+   "title": "Envío del proyecto al Cotizador",
+   "summary": "Contrato versionado sng-public-experience-v1 con envío multipart e idempotencia.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "can_do": [
+    "Construir el payload con cliente, proyecto, respuestas y metadata de archivos",
+    "Enviar multipart a POST /api/public/experience-submissions",
+    "Reutilizar submissionId y draft en reintentos",
+    "Interpretar RECEIVED, 413, 415 y documentos faltantes"
+   ],
+   "good": [
+    "Builder puro",
+    "Idempotencia por submissionId",
+    "Respuesta validada contra el ID enviado"
+   ],
+   "limits": [
+    "Depende del Cotizador disponible y configurado",
+    "Sin cola ni reintento diferido",
+    "Error genérico si el servicio no responde"
+   ],
+   "keywords": [
+    "lead",
+    "envío",
+    "Cotizador",
+    "contrato",
+    "payload",
+    "idempotencia"
+   ],
+   "evidence": "experience-submission.ts:3-4; build-experience-submission.ts:66-93; submit-experience.ts:20-52"
+  },
+  {
+   "id": "L08",
+   "stage": "convertir",
+   "order": 8,
+   "title": "Selección de cita",
+   "summary": "Disponibilidad, selección y reserva con política estricta, sobre un proveedor mock.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "can_do": [
+    "Consultar disponibilidad por asesor y modalidad",
+    "Seleccionar fecha y hora dentro de 30 días",
+    "Crear una reserva después del envío aceptado",
+    "Ver estados de carga, vacío, error y reintento"
+   ],
+   "good": [
+    "Validación estricta",
+    "Revalidación del slot",
+    "Bloqueo de doble envío",
+    "Política centralizada"
+   ],
+   "limits": [
+    "Solo mock en memoria",
+    "503 en producción por diseño",
+    "Sin Google Calendar, correo ni URL de reunión"
+   ],
+   "keywords": [
+    "agendamiento",
+    "calendario",
+    "cita",
+    "reunión",
+    "disponibilidad",
+    "mock"
+   ],
+   "evidence": "mock-calendar-provider.ts:8-10; provider.ts:7-10; docs/experience-scheduling.md"
+  },
+  {
+   "id": "L09",
+   "stage": "convertir",
+   "order": 9,
+   "title": "Contacto directo y redes",
+   "summary": "Email, teléfono y ubicación visibles; Instagram accionable.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "can_do": [
+    "Ver email, teléfono y ubicación",
+    "Abrir Instagram en pestaña nueva"
+   ],
+   "good": [
+    "Datos centralizados",
+    "Enlace social con rel y aviso accesible"
+   ],
+   "limits": [
+    "Email y teléfono no son enlaces",
+    "Sin WhatsApp",
+    "Datos provisionales declarados"
+   ],
+   "keywords": [
+    "contacto",
+    "email",
+    "teléfono",
+    "WhatsApp",
+    "Instagram",
+    "provisional"
+   ],
+   "evidence": "contact-section.tsx:4-8; home-content.ts:28-32"
+  },
+  {
+   "id": "L10",
+   "stage": "presentar",
+   "order": 10,
+   "title": "Accesibilidad y navegación",
+   "summary": "Skip link, foco gestionado, ARIA y navegación por teclado en todo el flujo.",
+   "implemented": "TRUE",
+   "reliability": 2,
+   "quality": "solid",
+   "tone": "ok",
+   "can_do": [
+    "Saltar al contenido con teclado",
+    "Navegar el menú mobile con Escape y retorno de foco",
+    "Escuchar el progreso anunciado con aria-live",
+    "Usar Tab, Enter y Espacio en los controles"
+   ],
+   "good": [
+    "Accesibilidad implementada en código",
+    "Roles y estados explícitos"
+   ],
+   "limits": [
+    "Solo 4 imágenes con alt declarado",
+    "El lang raíz no coincide con el contenido"
+   ],
+   "keywords": [
+    "accesibilidad",
+    "teclado",
+    "aria",
+    "foco",
+    "lectores de pantalla",
+    "skip link"
+   ],
+   "evidence": "home-header.tsx:19-34; experience-flow.tsx:174-178; layout.tsx:26"
+  },
+  {
+   "id": "L11",
+   "stage": "sostener",
+   "order": 11,
+   "title": "Publicación, metadata y distribución",
+   "summary": "Deploy en Vercel con imágenes remotas permitidas y metadata parcial.",
+   "implemented": "PARTIAL",
+   "reliability": 1,
+   "quality": "works_not_best",
+   "tone": "partial",
+   "can_do": [
+    "Publicar el sitio en Vercel",
+    "Servir imágenes desde R2",
+    "Declarar título y descripción en la home"
+   ],
+   "good": [
+    "Configuración de imágenes extensible",
+    "Metadata de la home describe el negocio"
+   ],
+   "limits": [
+    "Metadata de plantilla heredada por /experiencia",
+    "Sin sitemap, robots, Open Graph ni favicon propio",
+    "Sin datos estructurados"
+   ],
+   "keywords": [
+    "SEO",
+    "metadata",
+    "sitemap",
+    "Open Graph",
+    "deploy",
+    "Vercel"
+   ],
+   "evidence": "layout.tsx:16-19,25-28; page.tsx:13-16; next.config.ts:4-6"
+  },
+  {
+   "id": "L12",
+   "stage": "sostener",
+   "order": 12,
+   "title": "Gestión de contenido y media",
+   "summary": "No existe capa de gestión: contenido y media viven en el código.",
+   "implemented": "FALSE",
+   "reliability": 0,
+   "quality": "needs_work",
+   "tone": "bad",
+   "can_do": [
+    "Subir assets manualmente a R2",
+    "Referenciarlos por ruta desde el código"
+   ],
+   "good": [
+    "Assets fuera del repositorio",
+    "Resolución de URL centralizada"
+   ],
+   "limits": [
+    "Sin CMS, biblioteca de medios, búsqueda ni preview",
+    "Sin borradores, programación, roles ni historial",
+    "Sin soporte de video",
+    "Cada cambio requiere dev, PR y deploy"
+   ],
+   "keywords": [
+    "CMS",
+    "media",
+    "imágenes",
+    "video",
+    "marketing",
+    "contenido",
+    "Cloudflare",
+    "R2"
+   ],
+   "evidence": "home-media.ts:4-12; scenes.ts:9-78; next.config.ts:4-6; grep de video y mp4: 0 resultados"
+  },
+  {
+   "id": "L13",
+   "stage": "sostener",
+   "order": 13,
+   "title": "Medición y aprendizaje",
+   "summary": "No hay analítica ni eventos: el recorrido no se puede medir.",
+   "implemented": "FALSE",
+   "reliability": 0,
+   "quality": "needs_work",
+   "tone": "bad",
+   "can_do": [],
+   "good": [],
+   "limits": [
+    "Sin visitas, sin abandono, sin conversión",
+    "Sin atribución por CTA",
+    "Cada decisión de contenido se toma a ciegas"
+   ],
+   "keywords": [
+    "analítica",
+    "métricas",
+    "eventos",
+    "conversión",
+    "embudo",
+    "abandono"
+   ],
+   "evidence": "grep de analytics, gtag, plausible, posthog, vercel/analytics y umami: 0 resultados"
+  }
+ ],
+ "edges": [
+  {
+   "from": "L01",
+   "to": "L02",
+   "type": "presenta"
+  },
+  {
+   "from": "L01",
+   "to": "L03",
+   "type": "deriva"
+  },
+  {
+   "from": "L02",
+   "to": "L03",
+   "type": "deriva"
+  },
+  {
+   "from": "L03",
+   "to": "L04",
+   "type": "inicia"
+  },
+  {
+   "from": "L04",
+   "to": "L05",
+   "type": "personaliza"
+  },
+  {
+   "from": "L04",
+   "to": "L06",
+   "type": "requiere"
+  },
+  {
+   "from": "L06",
+   "to": "L07",
+   "type": "habilita"
+  },
+  {
+   "from": "L07",
+   "to": "L08",
+   "type": "precede"
+  },
+  {
+   "from": "L07",
+   "to": "L09",
+   "type": "alternativa"
+  },
+  {
+   "from": "L10",
+   "to": "L01",
+   "type": "habilita"
+  },
+  {
+   "from": "L11",
+   "to": "L01",
+   "type": "publica"
+  },
+  {
+   "from": "L12",
+   "to": "L01",
+   "type": "provee_contenido"
+  },
+  {
+   "from": "L12",
+   "to": "L02",
+   "type": "provee_contenido"
+  },
+  {
+   "from": "L12",
+   "to": "L04",
+   "type": "provee_preguntas"
+  },
+  {
+   "from": "L12",
+   "to": "L05",
+   "type": "provee_media"
+  },
+  {
+   "from": "L13",
+   "to": "L01",
+   "type": "no_instrumenta"
+  }
+ ],
+ "breaks": [
+  {
+   "from": "L12",
+   "to": "L01",
+   "reason": "Cambiar contenido o media requiere editar TypeScript, abrir PR y desplegar"
+  },
+  {
+   "from": "L13",
+   "to": "L01",
+   "reason": "No existe instrumentación: no se puede medir visita, abandono ni conversión"
+  },
+  {
+   "from": "L08",
+   "to": "cita_real",
+   "reason": "El único proveedor es un mock en memoria; en producción los endpoints responden 503"
+  }
+ ],
+ "axes": [
+  {
+   "id": "E1",
+   "name": "Autonomía de contenido"
+  },
+  {
+   "id": "E2",
+   "name": "Rendimiento"
+  },
+  {
+   "id": "E3",
+   "name": "Accesibilidad"
+  },
+  {
+   "id": "E4",
+   "name": "SEO y descubribilidad"
+  },
+  {
+   "id": "E5",
+   "name": "Medición"
+  },
+  {
+   "id": "E6",
+   "name": "Adaptabilidad responsive"
+  },
+  {
+   "id": "E7",
+   "name": "Escalabilidad de contenido"
+  },
+  {
+   "id": "E8",
+   "name": "Mantenibilidad"
+  },
+  {
+   "id": "E9",
+   "name": "Conversión de lead"
+  },
+  {
+   "id": "E10",
+   "name": "Autonomía del equipo"
+  }
+ ],
+ "matrix": {
+  "L01": [
+   0,
+   3,
+   3,
+   1,
+   0,
+   3,
+   1,
+   3,
+   3,
+   0
+  ],
+  "L02": [
+   0,
+   3,
+   2,
+   1,
+   0,
+   3,
+   1,
+   3,
+   3,
+   0
+  ],
+  "L03": [
+   1,
+   3,
+   2,
+   1,
+   0,
+   3,
+   2,
+   3,
+   3,
+   1
+  ],
+  "L04": [
+   1,
+   3,
+   2,
+   0,
+   0,
+   3,
+   2,
+   3,
+   3,
+   1
+  ],
+  "L05": [
+   1,
+   2,
+   2,
+   0,
+   0,
+   3,
+   2,
+   2,
+   3,
+   1
+  ],
+  "L06": [
+   2,
+   2,
+   2,
+   0,
+   0,
+   3,
+   2,
+   3,
+   2,
+   2
+  ],
+  "L07": [
+   2,
+   3,
+   2,
+   0,
+   0,
+   3,
+   2,
+   3,
+   3,
+   2
+  ],
+  "L08": [
+   2,
+   2,
+   2,
+   0,
+   0,
+   3,
+   1,
+   2,
+   2,
+   2
+  ],
+  "L09": [
+   2,
+   3,
+   2,
+   0,
+   0,
+   3,
+   1,
+   3,
+   1,
+   2
+  ],
+  "L10": [
+   1,
+   3,
+   3,
+   2,
+   0,
+   3,
+   2,
+   3,
+   3,
+   1
+  ],
+  "L11": [
+   0,
+   3,
+   2,
+   1,
+   0,
+   3,
+   1,
+   2,
+   3,
+   0
+  ],
+  "L12": [
+   0,
+   2,
+   1,
+   1,
+   0,
+   2,
+   0,
+   2,
+   2,
+   0
+  ],
+  "L13": [
+   0,
+   3,
+   2,
+   0,
+   0,
+   3,
+   0,
+   3,
+   1,
+   0
+  ]
+ },
+ "hypotheses": [
+  {
+   "id": "HL1",
+   "statement": "Cambiar una foto del sitio requiere editar código y desplegar.",
+   "verdict": "confirmed",
+   "nodes": [
+    "L12"
+   ],
+   "evidence": "20 llamadas a mediaUrl en 5 módulos de configuración; no hay fuente remota ni CMS."
+  },
+  {
+   "id": "HL2",
+   "statement": "El contenido está separado del layout.",
+   "verdict": "partially_confirmed",
+   "nodes": [
+    "L01",
+    "L12"
+   ],
+   "evidence": "Listas y datos en config; 20 líneas de copy visible repartidas en 9 componentes."
+  },
+  {
+   "id": "HL3",
+   "statement": "La landing puede mostrar video hoy.",
+   "verdict": "refuted",
+   "nodes": [
+    "L12"
+   ],
+   "evidence": "0 referencias a video, mp4, Mux o Cloudflare Stream."
+  },
+  {
+   "id": "HL4",
+   "statement": "Se puede medir el recorrido y la conversión.",
+   "verdict": "refuted",
+   "nodes": [
+    "L13"
+   ],
+   "evidence": "0 dependencias y 0 llamadas de analítica en src y package.json."
+  },
+  {
+   "id": "HL5",
+   "statement": "El cliente puede retomar el cuestionario donde lo dejó.",
+   "verdict": "refuted",
+   "nodes": [
+    "L04"
+   ],
+   "evidence": "Estado en useState; sin localStorage, cookie ni persistencia."
+  },
+  {
+   "id": "HL6",
+   "statement": "El sitio es navegable por teclado y con lectores de pantalla.",
+   "verdict": "confirmed",
+   "nodes": [
+    "L10"
+   ],
+   "evidence": "Skip link, aria-expanded, cierre con Escape, aria-live y sr-only."
+  },
+  {
+   "id": "HL7",
+   "statement": "Agregar una escena nueva requiere tocar varios archivos de configuración.",
+   "verdict": "confirmed",
+   "nodes": [
+    "L04",
+    "L05",
+    "L12"
+   ],
+   "evidence": "scenes.ts, questions.ts, question-groups.ts y, si aplica, design-images y design-finishes."
+  },
+  {
+   "id": "HL8",
+   "statement": "El lead llega al sistema comercial sin recapturar datos.",
+   "verdict": "confirmed_with_condition",
+   "nodes": [
+    "L07"
+   ],
+   "evidence": "Contrato sng-public-experience-v1; requiere endpoint del Cotizador activo y configurado."
+  },
+  {
+   "id": "HL9",
+   "statement": "El agendamiento produce una cita real.",
+   "verdict": "refuted",
+   "nodes": [
+    "L08"
+   ],
+   "evidence": "Solo MockCalendarProvider; 503 en producción por diseño."
+  },
+  {
+   "id": "HL10",
+   "statement": "El contenido se puede actualizar sin desplegar.",
+   "verdict": "refuted",
+   "nodes": [
+    "L12",
+    "L11"
+   ],
+   "evidence": "Contenido versionado en código; sin ISR, revalidate ni fuente remota."
+  },
+  {
+   "id": "HL11",
+   "statement": "El visitante que abandona el recorrido se pierde definitivamente.",
+   "verdict": "confirmed",
+   "nodes": [
+    "L04"
+   ],
+   "evidence": "Sin persistencia y sin enlace de reanudación; el lead se envía recién al final."
+  },
+  {
+   "id": "HL12",
+   "statement": "La página se adapta a nuevos tipos de contenido sin desarrollo.",
+   "verdict": "refuted",
+   "nodes": [
+    "L01",
+    "L12"
+   ],
+   "evidence": "Secciones fijas en JSX; no hay modelo de bloques."
+  },
+  {
+   "id": "HL13",
+   "statement": "El sitio se mantiene ligero porque delega los assets al CDN.",
+   "verdict": "confirmed",
+   "nodes": [
+    "L01",
+    "L12"
+   ],
+   "evidence": "public contiene 6 archivos, 5 son SVG de plantilla."
+  }
+ ],
+ "findings": [
+  {
+   "id": "F01",
+   "severity": "P0",
+   "title": "Contenido y media atados al código",
+   "description": "Sin CMS, biblioteca de medios, preview, roles ni programación. Cada cambio requiere dev, PR y deploy.",
+   "nodes": [
+    "L12"
+   ],
+   "effort": "M",
+   "owner": "producto"
+  },
+  {
+   "id": "F02",
+   "severity": "P0",
+   "title": "No hay medición",
+   "description": "Sin analítica ni eventos: no se puede saber cuántas visitas llegan, dónde abandonan ni cuántos proyectos se envían.",
+   "nodes": [
+    "L13"
+   ],
+   "effort": "S",
+   "owner": "producto"
+  },
+  {
+   "id": "F03",
+   "severity": "P1",
+   "title": "El copy principal está hardcodeado en componentes",
+   "description": "Solo listas y datos están en config; titulares y párrafos viven en el JSX.",
+   "nodes": [
+    "L01",
+    "L12"
+   ],
+   "effort": "S",
+   "owner": "desarrollo"
+  },
+  {
+   "id": "F04",
+   "severity": "P1",
+   "title": "No hay soporte de video",
+   "description": "Ni componente, ni pipeline, ni transcodificación. Agregar video es un desarrollo nuevo.",
+   "nodes": [
+    "L12"
+   ],
+   "effort": "M",
+   "owner": "producto"
+  },
+  {
+   "id": "F05",
+   "severity": "P1",
+   "title": "El recorrido no persiste progreso",
+   "description": "Recargar o cerrar la pestaña borra las 37 respuestas. Pérdida de leads medible.",
+   "nodes": [
+    "L04"
+   ],
+   "effort": "M",
+   "owner": "desarrollo"
+  },
+  {
+   "id": "F06",
+   "severity": "P1",
+   "title": "El contacto directo no es accionable",
+   "description": "Email y teléfono son texto; sin mailto, tel ni WhatsApp. El único CTA lleva al cuestionario.",
+   "nodes": [
+    "L09"
+   ],
+   "effort": "S",
+   "owner": "desarrollo"
+  },
+  {
+   "id": "F07",
+   "severity": "P1",
+   "title": "SEO técnico incompleto",
+   "description": "Sin sitemap, robots, Open Graph, favicon propio ni metadata propia en /experiencia.",
+   "nodes": [
+    "L11"
+   ],
+   "effort": "S",
+   "owner": "desarrollo"
+  },
+  {
+   "id": "F08",
+   "severity": "P2",
+   "title": "Sin versión corta del formulario",
+   "description": "No hay camino de baja fricción para leads con menos disposición.",
+   "nodes": [
+    "L04",
+    "L03"
+   ],
+   "effort": "M",
+   "owner": "producto"
+  },
+  {
+   "id": "F09",
+   "severity": "P2",
+   "title": "Sin casos de estudio navegables",
+   "description": "La vitrina muestra, no profundiza: no hay rutas por proyecto ni por servicio.",
+   "nodes": [
+    "L02"
+   ],
+   "effort": "L",
+   "owner": "producto"
+  },
+  {
+   "id": "F10",
+   "severity": "P2",
+   "title": "Sitio monolingüe con lang inconsistente",
+   "description": "Contenido en español con lang raíz en inglés; sin estructura para otro idioma.",
+   "nodes": [
+    "L01",
+    "L11"
+   ],
+   "effort": "L",
+   "owner": "desarrollo"
+  },
+  {
+   "id": "F11",
+   "severity": "P2",
+   "title": "Nomenclatura de assets inconsistente",
+   "description": "Mezcla de claves con ñ y sin ñ, sensibles a mayúsculas en R2.",
+   "nodes": [
+    "L12"
+   ],
+   "effort": "S",
+   "owner": "desarrollo"
+  },
+  {
+   "id": "F12",
+   "severity": "P2",
+   "title": "Sin historial ni auditoría de contenido",
+   "description": "No hay versión de contenido, autor, borrador ni programación de publicación.",
+   "nodes": [
+    "L12"
+   ],
+   "effort": "M",
+   "owner": "producto"
+  }
+ ],
+ "highlights": {
+  "top": [
+   "Contenido y media atados al código",
+   "No hay medición del recorrido",
+   "El copy principal no está centralizado",
+   "No hay soporte de video",
+   "El recorrido no se puede retomar"
+  ],
+  "strengths": [
+   "Cuestionario declarativo de 37 preguntas en configuración",
+   "Personalización en vivo real: audio, tinte térmico, seguridad, estética y acabados",
+   "Contrato con el Cotizador versionado e idempotente",
+   "Política de archivos única para UI y builder",
+   "Accesibilidad implementada en el código",
+   "Sitio liviano sin dependencias de terceros",
+   "Separación limpia por features y lógica desacoplada de React",
+   "Recorrido móvil resuelto con layouts específicos"
+  ]
+ },
+ "decisions_needed": [
+  "Quién publica contenido: marketing de forma autónoma o desarrollo en cada cambio",
+  "Adoptar CMS, gestor de media o el modelo híbrido recomendado",
+  "Si la página necesita video y con qué pipeline de transcodificación",
+  "Qué se mide, con qué herramienta y qué eventos del recorrido importan",
+  "Si el agendamiento es requisito de lanzamiento o fase 2",
+  "Si la landing se mantiene como one-pager o se abren rutas por proyecto y servicio"
+ ],
+ "content_operations": {
+  "summary": "Ningún contenido puede modificarse sin acceso al repositorio. La única operación posible sin tocar código es reemplazar un archivo en R2 con el mismo nombre.",
+  "editable_without_code": false,
+  "items": [
+   {
+    "content": "Titular y bajada del hero",
+    "where": "home-hero.tsx:8-12",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Texto del manifiesto",
+    "where": "brand-manifesto.tsx:4-6",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Titulares de secciones",
+    "where": "solutions-section.tsx:9; process-section.tsx:4; contact-section.tsx:7",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Lista de soluciones",
+    "where": "home-content.ts:21",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Pasos del proceso",
+    "where": "home-content.ts:22-27",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Proyectos destacados",
+    "where": "home-content.ts:9-13",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Imágenes de hero y proyectos",
+    "where": "home-media.ts:4-12 + R2",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Datos de contacto",
+    "where": "home-content.ts:30",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Instagram",
+    "where": "home-content.ts:32",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Navegación",
+    "where": "home-content.ts:3-10",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Preguntas del cuestionario",
+    "where": "questions.ts",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Escenas del recorrido",
+    "where": "scenes.ts",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Variantes de diseño y acabados",
+    "where": "design-images.ts; design-finishes.ts + R2",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Audio ambiental",
+    "where": "audio/config.ts + R2",
+    "actor": "dev",
+    "deploy": true
+   },
+   {
+    "content": "Título y descripción para buscadores",
+    "where": "page.tsx:13-16",
+    "actor": "dev",
+    "deploy": true
+   }
+  ]
+ },
+ "media_gap": {
+  "pipeline": [
+   "Subir asset a R2 (manual)",
+   "Escribir la ruta en TypeScript",
+   "PR y revisión",
+   "Build y deploy",
+   "El CDN sirve el asset"
+  ],
+  "remote_assets": 18,
+  "media_references": 20,
+  "config_files": 5,
+  "allowed_prefixes": [
+   "/experience/**",
+   "/website/**"
+  ],
+  "videos": 0,
+  "missing": [
+   "Biblioteca de medios con búsqueda y preview",
+   "Borradores y programación de publicación",
+   "Roles y permisos de edición",
+   "Historial y auditoría de cambios",
+   "Soporte de video y transcodificación",
+   "Variantes de imagen generadas por el gestor",
+   "Texto alternativo editable"
+  ],
+  "options": [
+   {
+    "id": "A",
+    "name": "Centralizar el copy en archivos de contenido",
+    "solves": "Titulares y párrafos en un solo lugar",
+    "does_not_solve": "Sigue requiriendo dev y deploy",
+    "effort": "S",
+    "risk": "bajo"
+   },
+   {
+    "id": "B",
+    "name": "Gestor de media (Cloudflare Images o Cloudinary) con loader de next/image",
+    "solves": "Fotos y video con transformaciones, variantes responsivas y optimización",
+    "does_not_solve": "El copy sigue en código",
+    "effort": "M",
+    "risk": "bajo"
+   },
+   {
+    "id": "C",
+    "name": "CMS headless con set cerrado de bloques (Payload, Sanity o Storyblok)",
+    "solves": "Contenido y media editables por marketing, con preview, roles y programación",
+    "does_not_solve": "Requiere definir el modelo y migrar el contenido",
+    "effort": "L",
+    "risk": "medio"
+   },
+   {
+    "id": "D",
+    "name": "Page builder de bloques libres",
+    "solves": "Cualquier sección, cualquier orden",
+    "does_not_solve": "Consistencia visual y de diseño",
+    "effort": "XL",
+    "risk": "alto"
+   }
+  ],
+  "recommendation": "A + B ahora; C cuando marketing necesite publicar sin dev. No adoptar D: el constructor libre degrada la identidad visual, que es el argumento principal de la marca.",
+  "video_recommendation": "Cloudflare Stream o Mux si se adopta B. MP4 crudo desde R2 funciona pero no adapta bitrate al dispositivo."
+ },
+ "query_guide": [
+  {
+   "question": "¿Qué puede hacer un visitante hoy?",
+   "answer_in": "Secciones 2 y 4 (L01-L09)"
+  },
+  {
+   "question": "¿Se puede cambiar una foto sin programar?",
+   "answer_in": "L12, sección 7 y sección 8"
+  },
+  {
+   "question": "¿Cuánto cuesta agregar un video?",
+   "answer_in": "Secciones 8.2 y 8.4"
+  },
+  {
+   "question": "¿Qué se mide?",
+   "answer_in": "L13: nada"
+  },
+  {
+   "question": "¿El formulario se puede retomar?",
+   "answer_in": "L04, HL5, F05"
+  },
+  {
+   "question": "¿El lead llega al sistema comercial?",
+   "answer_in": "L07, HL8"
+  },
+  {
+   "question": "¿El agendamiento funciona?",
+   "answer_in": "L08, HL9"
+  },
+  {
+   "question": "¿Es accesible?",
+   "answer_in": "L10, HL6"
+  },
+  {
+   "question": "¿Qué hay que decidir?",
+   "answer_in": "decisions_needed"
+  },
+  {
+   "question": "¿Qué es urgente?",
+   "answer_in": "findings P0: F01 y F02"
+  }
+ ],
+ "render_hints": {
+  "layout": "stages_left_to_right",
+  "stage_order": [
+   "presentar",
+   "descubrir",
+   "diagnosticar",
+   "convertir",
+   "sostener"
+  ],
+  "tone_colors": {
+   "ok": "#1f6f3f",
+   "partial": "#8a6d1f",
+   "bad": "#8a1f1f"
+  },
+  "tone_labels": {
+   "ok": "Disponible",
+   "partial": "Disponible con condición",
+   "bad": "No existe"
+  },
+  "badge_labels": {
+   "TRUE": "Implementado",
+   "PARTIAL": "Parcial",
+   "FALSE": "Ausente"
+  },
+  "reliability_labels": {
+   "0": "Sin garantía",
+   "1": "Funciona con bordes",
+   "2": "Sólido"
+  },
+  "quality_labels": {
+   "solid": "Bien resuelto",
+   "works_not_best": "Funciona, no es la mejor forma",
+   "needs_work": "Hay que reforzar"
+  },
+  "tone_rule": "ok = TRUE y confiabilidad 2; partial = PARTIAL o confiabilidad 1; bad = FALSE.",
+  "emphasis": [
+   "L12",
+   "L13",
+   "L04",
+   "L07"
+  ],
+  "narrative_arc": "La página ya convierte; lo que no puede es actualizarse sola.",
+  "duration_hint_seconds": 150
+ }
+}
