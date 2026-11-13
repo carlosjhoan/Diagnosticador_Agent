@@ -65,6 +65,7 @@ const TYPE_LABEL = { gap: "falta", risk: "riesgo", debt: "deuda" };
 
 async function boot() {
   mountRail();
+  mountRailMobile();
   mountEmail();
 
   const [res, fx] = await Promise.all([
@@ -180,6 +181,28 @@ function setRail(hidden) {
   } catch {
     /* sin storage */
   }
+}
+
+function mountRailMobile() {
+  const btn = el("rail-mobile");
+  if (!btn) return;
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.body.classList.toggle("rail-open");
+  });
+
+  // tocar fuera del riel lo cierra
+  document.addEventListener("click", (e) => {
+    if (!document.body.classList.contains("rail-open")) return;
+    if (e.target.closest(".rail")) return;
+    document.body.classList.remove("rail-open");
+  });
+
+  // al elegir una sesión se cierra solo
+  document.querySelector(".rail")?.addEventListener("click", (e) => {
+    if (e.target.closest("[data-session]")) document.body.classList.remove("rail-open");
+  });
 }
 
 function mountRail() {

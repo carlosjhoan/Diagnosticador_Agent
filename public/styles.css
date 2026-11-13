@@ -4065,3 +4065,77 @@ body.is-empty .composer textarea {
   transition: height 0.18s ease, padding 0.18s ease, font-size 0.18s ease;
 }
 body.instant .composer textarea { transition: none; }
+
+/* ---------- móvil ---------- */
+
+.rail-mobile {
+  display: none;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--stone);
+  cursor: pointer;
+}
+.rail-mobile:hover { border-color: var(--olive); color: var(--ink); }
+
+@media (max-width: 860px) {
+  /* sin riel fijo: el compositor arranca en el borde */
+  :root { --rail-w: 0px; }
+
+  .rail-mobile { display: grid; }
+
+  /* el riel pasa a cajón que se desliza */
+  .rail {
+    display: flex;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 272px;
+    z-index: 41;
+    transform: translateX(-104%);
+    transition: transform 0.24s cubic-bezier(0.22, 0.8, 0.3, 1);
+    box-shadow: 24px 0 60px -30px rgba(25, 35, 62, 0.5);
+  }
+  /* en móvil el cajón manda: el colapso de escritorio no aplica */
+  body.rail-hidden .rail { display: flex; }
+  body.rail-open .rail { transform: none; }
+  body.rail-open::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(25, 35, 62, 0.32);
+    backdrop-filter: blur(2px);
+  }
+
+  /* el compositor ocupa el ancho completo */
+  body.is-empty .dock { left: 0; bottom: 4vh; padding: 0 14px; }
+  body.is-empty .composer { max-width: 100%; }
+
+  /* tarjetas y encabezados */
+  .home-title { font-size: 30px; }
+  .home-head { margin-bottom: 18px; }
+  .pcard { padding: 18px 16px 14px; }
+  .proj-head { flex-wrap: wrap; row-gap: 8px; }
+  .pmetrics { margin-left: 0; }
+
+  /* controles táctiles */
+  .pcard-go, .say-cta, .proj-back, .nm-nav, .chip-x { min-height: 34px; }
+  .pstage { flex-basis: 190px; }
+  .proj-track { gap: 20px; }
+}
+
+@media (max-width: 480px) {
+  .home-title { font-size: 26px; }
+  .home-sub { font-size: 14px; }
+  .pcard-name { font-size: 18px; }
+  .turn { margin-bottom: 34px; }
+  .view + .turn { margin-top: 34px; }
+  .nm-tabs button { padding: 10px 8px; }
+  .nm-body { padding: 14px 14px; }
+}
