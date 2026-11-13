@@ -347,7 +347,8 @@ console.log('input editable:', !document.getElementById('input').disabled);
 // --- envío por correo: se verifica la conexión, no el pintado ---
 const appSrc = readFileSync("public/app.js", "utf8");
 const htmlSrc = readFileSync("public/index.html", "utf8");
-console.log("accion de correo en el pie:", appSrc.includes("data-mail=\"${turn.id}\""));
+console.log("correo cableado:", appSrc.includes("data-mail="));
+console.log("correo visible:", /const SHOW_MAIL = true/.test(appSrc));
 console.log("modal de correo montado:", htmlSrc.includes('id="email"'));
 console.log("apertura diferida al cerrar el turno:", appSrc.includes("state.pendingTool"));
 // --- el modelo propone correo: el modal debe abrirse solo ---

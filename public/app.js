@@ -722,6 +722,10 @@ function scrollCanvasToEnd() {
   c.scrollTop = c.scrollHeight;
 }
 
+// Enviar por correo: el circuito está completo, pero ocupa espacio en el pie
+// del turno. Se enciende cuando haga falta.
+const SHOW_MAIL = false;
+
 const ICON = {
   calendar: `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>`,
   stopwatch: `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 10v4l2.5 1.6"/><path d="M9.5 2.8h5"/><path d="M12 2.8v2.4"/><path d="M18.6 7.4l1.3-1.3"/></svg>`,
@@ -792,11 +796,12 @@ function footHtml(turn) {
       ? `<span class="u-item">${ICON.coin}${displayCost(turn.costo, fx)}</span>`
       : "";
 
-  const mail = turn.spec
-    ? `<button type="button" class="u-item u-mail" data-mail="${turn.id}" title="Empaquetar esta vista y enviarla por correo">
+  const mail =
+    SHOW_MAIL && turn.spec
+      ? `<button type="button" class="u-item u-mail" data-mail="${turn.id}" title="Empaquetar esta vista y enviarla por correo">
     ${ICON.mail}<span>Enviar por correo</span>
   </button>`
-    : "";
+      : "";
 
   return [
     `<span class="u-item">${ICON.calendar}${fechaDe(turn.at)} · ${hora(turn.at)}</span>`,
