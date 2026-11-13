@@ -88,7 +88,7 @@ export function renderProject(host, project, { onBack, onNode, onProposal, inlin
         <span class="proj-badge" data-state="${esc(v.estado)}">${esc(v.estadoTexto || v.etiqueta)}</span>
 
         <div class="pmetrics">
-          <span class="pm" data-pct="${v.negocio ? v.negocio.pct : 0}">
+          <span class="pm" data-pct="${v.negocio ? v.negocio.pct : 0}" data-metric="negocio" tabindex="0" role="button">
             <svg class="pm-ring" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
               <circle class="pm-bg" cx="16" cy="16" r="13" />
               <circle class="pm-fg" cx="16" cy="16" r="13" stroke-dasharray="0 81.7" />
@@ -99,7 +99,7 @@ export function renderProject(host, project, { onBack, onNode, onProposal, inlin
 
           <span class="pm-sep" aria-hidden="true"></span>
 
-          <span class="pm" data-pct="${v.cobertura ? v.cobertura.pct : 0}" data-k="prod">
+          <span class="pm" data-pct="${v.cobertura ? v.cobertura.pct : 0}" data-k="prod" data-metric="prod" tabindex="0" role="button">
             <svg class="pm-ring" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
               <circle class="pm-bg" cx="16" cy="16" r="13" />
               <circle class="pm-fg" cx="16" cy="16" r="13" stroke-dasharray="0 81.7" />
@@ -139,6 +139,23 @@ export function renderProject(host, project, { onBack, onNode, onProposal, inlin
       el.addEventListener("click", () => onNode?.(el.dataset.node));
     });
 
+    host.querySelectorAll("[data-metric]").forEach((box) => {
+      const tipo = box.dataset.metric;
+      let timer = null;
+
+      box.addEventListener("mouseenter", () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => abrirMetrica(box, project, tipo), 180);
+      });
+      box.addEventListener("mouseleave", () => clearTimeout(timer));
+      box.addEventListener("focus", () => abrirMetrica(box, project, tipo));
+      box.addEventListener("click", (e) => {
+        e.stopPropagation();
+        abrirMetrica(box, project, tipo);
+      });
+      box.addEventListener("blur", () => setTimeout(cerrarMetrica, 120));
+    });
+
     requestAnimationFrame(() => {
       animarMetricas(host);
       if (pendienteIgnicion) {
@@ -174,6 +191,106 @@ export function renderProject(host, project, { onBack, onNode, onProposal, inlin
       return true;
     },
   };
+}
+
+/** Popover con los pasos que componen un porcentaje. */
+let metricPop = null;
+let metricAnchor = null;
+
+function cerrarMetrica() {
+  if (!metricPop) return;
+  metricPop.remove();
+  metricPop = null;
+  metricAnchor = null;
+  document.removeEventListener("click", fueraMetrica, true);
+  document.removeEventListener("keydown", escMetrica, true);
+}
+
+function escMetrica(e) {
+  if (e.key === "Escape") cerrarMetrica();
+}
+
+function fueraMetrica(e) {
+  if (!metricPop) return;
+  if (metricPop.contains(e.target) || e.target.closest("[data-metric]")) return;
+  cerrarMetrica();
+}
+
+function filasMetrica(project, tipo) {
+  const nodos = project.nodos.filter((n) => !n.fueraDeRubrica);
+
+  return nodos.map((n) => {
+    const integrado = n.integracion === "I3";
+    const parcial = n.integracion === "I2";
+    const aguanta = n.funcionamiento === "F2" || n.funcionamiento === "F3";
+
+    if (tipo === "negocio") {
+      if (integrado) return { n, icono: "✓", tono: "ok", texto: "completo" };
+      if (parcial) return { n, icono: "◐", tono: "warn", texto: "parcial · cuenta medio" };
+      return { n, icono: "✕", tono: "no", texto: "no existe" };
+    }
+
+    if (integrado && aguanta) return { n, icono: "✓", tono: "ok", texto: "listo" };
+    if (integrado) return { n, icono: "⚠", tono: "warn", texto: "existe, no aguanta fallos" };
+    if (parcial) return { n, icono: "⚠", tono: "warn", texto: "a medias" };
+    return { n, icono: "✕", tono: "no", texto: "no existe" };
+  });
+}
+
+export function abrirMetrica(anchor, project, tipo) {
+  cerrarMetrica();
+
+  const filas = filasMetrica(project, tipo);
+  const suman = filas.filter((f) => f.tono === "ok").length;
+  const aMedias = filas.filter((f) => f.tono === "warn").length;
+
+  const el = document.createElement("div");
+  el.className = "metric-pop";
+  el.setAttribute("role", "dialog");
+  el.innerHTML =
+    '<p class="mp-title">' +
+    (tipo === "negocio" ? "Cumple el negocio" : "Listo para producción") +
+    "</p>" +
+    '<p class="mp-sub">' +
+    suman +
+    " en regla · " +
+    aMedias +
+    " a medias · " +
+    (filas.length - suman - aMedias) +
+    " sin resolver</p>" +
+    '<ul class="mp-list">' +
+    filas
+      .map(
+        (f) =>
+          '<li data-t="' +
+          f.tono +
+          '"><span class="mp-ico">' +
+          f.icono +
+          '</span><span class="mp-name">' +
+          esc(f.n.nombre) +
+          '</span><span class="mp-tag">' +
+          esc(f.texto) +
+          "</span></li>"
+      )
+      .join("") +
+    "</ul>";
+
+  document.body.appendChild(el);
+  metricPop = el;
+  metricAnchor = anchor;
+
+  const r = anchor.getBoundingClientRect();
+  const mr = el.getBoundingClientRect();
+  let left = Math.min(r.left, window.innerWidth - mr.width - 12);
+  let top = r.bottom + 10;
+  if (top + mr.height > window.innerHeight - 12) top = Math.max(12, r.top - mr.height - 10);
+  el.style.left = Math.max(12, left) + "px";
+  el.style.top = top + "px";
+
+  setTimeout(() => {
+    document.addEventListener("click", fueraMetrica, true);
+    document.addEventListener("keydown", escMetrica, true);
+  }, 0);
 }
 
 /** Los aros del encabezado se llenan de a poco. */
